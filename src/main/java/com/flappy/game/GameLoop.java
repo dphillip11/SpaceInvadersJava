@@ -15,16 +15,21 @@ public class GameLoop {
     private boolean running;
     public GamePanel gamePanel = new GamePanel();
     private List<GameObject> gameObjects = new ArrayList<>();
+    private CollisionManager collisionManager = new CollisionManager(window.getWidth(),window.getHeight(), 10);
     
     public void start() {
+        //setup window
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-        Point position = window.convertToScreenPos(startPosX, startPosY);
-        Spaceship spaceship = new Spaceship(position.x, position.y, gameObjects);
-        gameObjects.add(spaceship);
-        window.inputHandler.addListener(spaceship);
         window.add(gamePanel);
         window.setVisible(true);
+        //initialize player
+        Point position = window.convertToScreenPos(startPosX, startPosY);
+        PlayerShip player = new PlayerShip(position.x, position.y, gameObjects);
+        gameObjects.add(player);
+        window.inputHandler.addListener(player);
+        //spawn an enemy
+        gameObjects.add(new Enemy(200, 100, gameObjects));
 
         running = true;
 
@@ -65,6 +70,7 @@ public class GameLoop {
         }
         CullInactiveObjects();
         window.fireHeldArrowKeys();
+        collisionManager.performCollisionDetection(gameObjects);
     }
     
     public class GamePanel extends JPanel {

@@ -51,7 +51,7 @@ class GameApplicationTests {
 	@Test
 	void testBulletInitialization() {
 		Bullet bullet = new Bullet();
-		bullet.Init(100, 200);
+		bullet.Init(100, 200, true);
 		
 		assertTrue(bullet.isActive());
 		assertEquals(100, bullet.getX());
@@ -62,7 +62,7 @@ class GameApplicationTests {
 	@Test
 	void testBulletUpdate() {
 		Bullet bullet = new Bullet();
-		bullet.Init(100, 200);
+		bullet.Init(100, 200, true);
 		
 		bullet.update(1.0); // deltaTime = 1 second
 		

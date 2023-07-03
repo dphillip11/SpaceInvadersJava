@@ -5,17 +5,23 @@ import java.awt.Graphics;
 
 public class Bullet implements GameObject {
     public static final float MAX_RANGE = 1000;
-    private float speed = 15;
+    private float speed = 20;
     private float range = MAX_RANGE;
     private float x;
     private float y;
+    private int radius = 5;
     public boolean isActive = true;
 
-    public void Init(int x, int y) {
+    public void Init(int x, int y, boolean up) {
         this.x = x;
         this.y = y;
         isActive = true;
         range = MAX_RANGE;
+        if (up) {
+            speed = Math.abs(speed);
+        } else {
+            speed = -Math.abs(speed);
+        }
     }
 
     @Override
@@ -23,7 +29,7 @@ public class Bullet implements GameObject {
         if (!isActive)
             return;
         g.setColor(Color.RED);
-        g.fillOval((int) x - 5, (int) y - 5, 10, 10);
+        g.fillOval((int) x - radius, (int) y - radius, 2*radius,2*radius);
     }
 
     @Override
@@ -68,4 +74,14 @@ public class Bullet implements GameObject {
     public float getSpeed() {
         return speed;
     }
+
+     @Override
+   public int GetMaxX(){return (int)x+ radius;}
+@Override
+    public int GetMinX(){return (int)x- radius;}
+@Override
+    public int GetMaxY(){return (int)y+ radius;}
+@Override
+   public int GetMinY(){return (int)y- radius;}
+	
 }

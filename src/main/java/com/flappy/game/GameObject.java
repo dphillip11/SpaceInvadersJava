@@ -11,4 +11,12 @@ public interface GameObject {
     boolean isActive();
 
     void setActive(boolean active);
+
+    int GetMaxX();
+
+    int GetMinX();
+
+    int GetMaxY();
+
+    int GetMinY();
 }
