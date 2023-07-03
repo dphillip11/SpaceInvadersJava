@@ -44,4 +44,12 @@ public class Collidable {
     public int GetMinY() {
         return (int) (y - radius);
     }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
 }

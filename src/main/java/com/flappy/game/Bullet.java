@@ -3,18 +3,16 @@ package com.flappy.game;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Bullet implements GameObject {
+public class Bullet extends Collidable implements GameObject {
     public static final float MAX_RANGE = 1000;
     private float speed = 20;
     private float range = MAX_RANGE;
-    private float x;
-    private float y;
-    private int radius = 5;
-    public boolean isActive = true;
+
 
     public void Init(int x, int y, boolean up) {
         this.x = x;
         this.y = y;
+        this.radius = 5;
         isActive = true;
         range = MAX_RANGE;
         if (up) {
@@ -29,7 +27,7 @@ public class Bullet implements GameObject {
         if (!isActive)
             return;
         g.setColor(Color.RED);
-        g.fillOval((int) x - radius, (int) y - radius, 2*radius,2*radius);
+        g.fillOval((int) x - (int)radius, (int) y - (int)radius, 2*(int)radius,2*(int)radius);
     }
 
     @Override
@@ -59,14 +57,6 @@ public class Bullet implements GameObject {
         isActive = false;
     }
 
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
     public float getRange() {
         return range;
     }
@@ -74,14 +64,4 @@ public class Bullet implements GameObject {
     public float getSpeed() {
         return speed;
     }
-
-     @Override
-   public int GetMaxX(){return (int)x+ radius;}
-@Override
-    public int GetMinX(){return (int)x- radius;}
-@Override
-    public int GetMaxY(){return (int)y+ radius;}
-@Override
-   public int GetMinY(){return (int)y- radius;}
-	
 }

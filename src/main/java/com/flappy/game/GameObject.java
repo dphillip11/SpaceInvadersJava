@@ -8,6 +8,10 @@ public interface GameObject {
     
     void takeDamage(int damage);
 
+    void applyHit();
+
+    public boolean hasCollided();
+
     boolean isActive();
 
     void setActive(boolean active);
