@@ -29,6 +29,9 @@ public class Spaceship extends Collidable implements GameObject{
         // For example:
         x += velocityX * deltaTime;
         y += velocityY * deltaTime;
+        if (super.hasCollided()) {
+            takeDamage(1);
+        }
     }
    
     public void shoot(boolean up) {

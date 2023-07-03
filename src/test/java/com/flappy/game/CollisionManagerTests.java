@@ -21,6 +21,9 @@ public class CollisionManagerTests{
         collisionManager.performCollisionDetection(gameObjects);
 
         // Assert
+        for (GameObject gameObject : gameObjects) {
+            Assertions.assertTrue(!gameObject.hasCollided());
+        }
         Assertions.assertEquals(3, gameObjects.size());
     }
 
@@ -35,15 +38,15 @@ public class CollisionManagerTests{
 
         // Assert
         Assertions.assertEquals(4, gameObjects.size());
-        Assertions.assertTrue(!gameObjects.get(0).isActive());
-        Assertions.assertTrue(!gameObjects.get(1).isActive());
+        Assertions.assertTrue(gameObjects.get(0).hasCollided());
+        Assertions.assertTrue(gameObjects.get(1).hasCollided());
     }
 
     private List<GameObject> createGameObjectsWithoutCollisions() {
         List<GameObject> gameObjects = new ArrayList<>();
-        gameObjects.add(new TestObject(100, 100, 50));
-        gameObjects.add(new TestObject(200, 200, 50));
-        gameObjects.add(new TestObject(300, 300, 50));
+        gameObjects.add(new TestObject(100, 100, 40));
+        gameObjects.add(new TestObject(200, 200, 40));
+        gameObjects.add(new TestObject(300, 300, 40));
         return gameObjects;
     }
 

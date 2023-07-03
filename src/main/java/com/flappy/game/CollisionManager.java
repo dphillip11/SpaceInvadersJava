@@ -60,7 +60,7 @@ public class CollisionManager {
                 if (cellObjects.size() > 1) {
                     for (int objectIndex : cellObjects) {
                         GameObject object = gameObjects.get(objectIndex);
-                        object.takeDamage(1); // Apply collision logic specific to your game
+                        object.applyHit(); // Apply collision logic specific to your game
                     }
                 }
             }

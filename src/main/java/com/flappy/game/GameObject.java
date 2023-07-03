@@ -10,7 +10,7 @@ public interface GameObject {
 
     void applyHit();
 
-    public boolean hasCollided();
+    boolean hasCollided();
 
     boolean isActive();
 
