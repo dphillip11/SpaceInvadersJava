@@ -3,9 +3,8 @@ package com.flappy.game;
 import java.awt.Color;
 import java.awt.Graphics;
 
-
 public class Bullet implements GameObject {
-    private static final float MAX_RANGE = 1000;
+    public static final float MAX_RANGE = 1000;
     private float speed = 15;
     private float range = MAX_RANGE;
     private float x;
@@ -21,9 +20,10 @@ public class Bullet implements GameObject {
 
     @Override
     public void draw(Graphics g) {
-        if(!isActive) return;
+        if (!isActive)
+            return;
         g.setColor(Color.RED);
-        g.fillOval((int)x - 5, (int)y - 5, 10, 10);
+        g.fillOval((int) x - 5, (int) y - 5, 10, 10);
     }
 
     @Override
@@ -47,9 +47,25 @@ public class Bullet implements GameObject {
     public void setActive(boolean active) {
         isActive = active;
     }
-    
+
     @Override
     public void takeDamage(int damage) {
         isActive = false;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public float getRange() {
+        return range;
+    }
+
+    public float getSpeed() {
+        return speed;
     }
 }

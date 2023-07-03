@@ -38,4 +38,27 @@ public class GameObjectPool<T extends GameObject> {
         }
         return null;
     }
+     public void releaseObject(T object) {
+        object.setActive(false);
+    }
+    
+    public void releaseAllObjects() {
+        for (T object : objects) {
+            object.setActive(false);
+        }
+    }
+    
+    public void removeInactiveObjects() {
+        List<T> inactiveObjects = new ArrayList<>();
+        for (T object : objects) {
+            if (!object.isActive()) {
+                inactiveObjects.add(object);
+            }
+        }
+        objects.removeAll(inactiveObjects);
+    }
+    
+    public int getPoolSize() {
+        return objects.size();
+    }
 }
