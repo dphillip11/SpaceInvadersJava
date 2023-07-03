@@ -3,6 +3,9 @@ package com.flappy.game;
 public class Collidable {
     protected float x;
     protected float y;
+    protected float velocityX;
+    protected float velocityY;
+
     protected float radius;
     protected boolean isActive = true;
     protected boolean hasCollided = false;
@@ -51,5 +54,10 @@ public class Collidable {
 
     public float getY() {
         return y;
+    }
+
+    public void SetSpeed(float x, float y){
+        velocityX = x;
+        velocityY = y;
     }
 }

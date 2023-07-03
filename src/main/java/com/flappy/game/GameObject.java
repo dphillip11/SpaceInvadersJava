@@ -23,4 +23,6 @@ public interface GameObject {
     int GetMaxY();
 
     int GetMinY();
+
+    void SetSpeed(float x, float y);
 }

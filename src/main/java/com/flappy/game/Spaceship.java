@@ -5,8 +5,6 @@ import java.util.List;
 
 
 public class Spaceship extends Collidable implements GameObject{
-    protected float velocityX = 0;
-    protected float velocityY = 0;
     protected GameObjectPool<Bullet> bulletPool = new GameObjectPool<>(100, Bullet.class);
     protected List<GameObject> gameObjects;
     protected Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/spaceship.png"));

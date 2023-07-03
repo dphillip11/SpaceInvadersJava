@@ -9,7 +9,7 @@ import java.util.Iterator;
 public class GameLoop {
     private final float startPosX = 0.5f;
     private final float startPosY = 0.8f;
-    private final int WINDOW_HEIGHT = 700;
+    private final int WINDOW_HEIGHT = 1200;
     private final int WINDOW_WIDTH = 1000;
     private Window window = new Window();
     private boolean running;
@@ -30,6 +30,7 @@ public class GameLoop {
         window.inputHandler.addListener(player);
         //spawn an enemy
         gameObjects.add(new Enemy(200, 100, gameObjects));
+        EnemyManager.SpawnRow(gameObjects, WINDOW_WIDTH, 100, 1);
 
         running = true;
 
