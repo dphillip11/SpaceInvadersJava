@@ -6,6 +6,7 @@ import java.util.List;
 public class PlayerShip extends Spaceship implements InputListener{
     PlayerShip(float x, float y, List<GameObject> gameObjects) {
         super(x, y, gameObjects);
+        type = ObjectType.PLAYER;
     }
 
     @Override
@@ -16,21 +17,24 @@ public class PlayerShip extends Spaceship implements InputListener{
         y += velocityY * deltaTime;
         velocityX = 0;
         velocityY = 0;
+        respectScreenBoundary();
     }
+
 
     @Override
     public void onKeyPressed(Input input) {
+
         if (input == Input.UP) {
-            velocityY = -10;
+            velocityY = -500;
         }
         if (input == Input.DOWN) {
-            velocityY = 10;
+            velocityY = 500;
         }
         if (input == Input.LEFT) {
-            velocityX = -10;
+            velocityX = -500;
         }
         if (input == Input.RIGHT) {
-            velocityX = 10;
+            velocityX = 500;
         }
         if (input == Input.SPACE) {
             shoot(true);

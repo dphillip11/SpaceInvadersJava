@@ -10,6 +10,7 @@ public class TestObject extends Collidable implements GameObject {
         this.radius = radius;
     }
 
+
     public void draw(Graphics g) {
     }
 

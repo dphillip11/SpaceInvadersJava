@@ -7,7 +7,7 @@ public class EnemyManager {
         //set random x speed
         float x_velocity = (float) (Math.random() * speed - speed * 0.5f);
         int max_possible = screen_width / cellSize;
-        int num_enemies = (int) (Math.random() * max_possible);
+        int num_enemies = Math.max(1,(int) (Math.random() * max_possible));
         //calculate spacing between enemies
         int spacing = screen_width / num_enemies;
         //calculate starting position

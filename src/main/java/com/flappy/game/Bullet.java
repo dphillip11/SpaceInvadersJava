@@ -5,9 +5,8 @@ import java.awt.Graphics;
 
 public class Bullet extends Collidable implements GameObject {
     public static final float MAX_RANGE = 1000;
-    private float speed = 20;
+    private float speed = 600;
     private float range = MAX_RANGE;
-
 
     public void Init(int x, int y, boolean up) {
         this.x = x;
@@ -17,8 +16,10 @@ public class Bullet extends Collidable implements GameObject {
         range = MAX_RANGE;
         if (up) {
             speed = Math.abs(speed);
+            type = ObjectType.BULLET_ENEMY;
         } else {
             speed = -Math.abs(speed);
+            type = ObjectType.BULLET_FRIENDLY;
         }
     }
 
@@ -40,6 +41,10 @@ public class Bullet extends Collidable implements GameObject {
         if (range <= 0) {
             isActive = false;
         }
+        if (hasCollided) {
+            isActive = false;
+        }
+        respectScreenBoundary();
     }
 
     @Override

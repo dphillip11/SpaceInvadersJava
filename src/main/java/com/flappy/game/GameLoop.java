@@ -7,15 +7,17 @@ import java.util.List;
 import java.util.Iterator;
 
 public class GameLoop {
+    private int TARGET_FPS = 60;
     private final float startPosX = 0.5f;
     private final float startPosY = 0.8f;
-    private final int WINDOW_HEIGHT = 1200;
-    private final int WINDOW_WIDTH = 1000;
+    public static final int WINDOW_HEIGHT = 1080;
+    public static final int WINDOW_WIDTH = 1920;
     private Window window = new Window();
     private boolean running;
     public GamePanel gamePanel = new GamePanel();
     private List<GameObject> gameObjects = new ArrayList<>();
-    private CollisionManager collisionManager = new CollisionManager(window.getWidth(),window.getHeight(), 10);
+    private CollisionManager collisionManager = new CollisionManager(WINDOW_WIDTH, WINDOW_HEIGHT, 5);
+    double spawnTimer = 5;
     
     public void start() {
         //setup window
@@ -30,12 +32,12 @@ public class GameLoop {
         window.inputHandler.addListener(player);
         //spawn an enemy
         gameObjects.add(new Enemy(200, 100, gameObjects));
-        EnemyManager.SpawnRow(gameObjects, WINDOW_WIDTH, 100, 1);
+        EnemyManager.SpawnRow(gameObjects, WINDOW_WIDTH, 40, 50);
 
         running = true;
-
+        
         long lastTime = System.nanoTime();
-        double nsPerTick = 1000000000.0 / 60.0; // 60 ticks per second
+        double nsPerTick = 1000000000.0 / TARGET_FPS; // 60 ticks per second
         double delta = 0;
 
         while (running) {
@@ -44,7 +46,7 @@ public class GameLoop {
             lastTime = now;
 
             while (delta >= 1) {
-                update(delta);
+                update(delta/TARGET_FPS);
                 delta--;
             }
 
@@ -65,26 +67,34 @@ public class GameLoop {
     
     private void update(double deltaTime) {
         // Update game logic here
-        
+        spawnTimer -= deltaTime;
+        if (spawnTimer <= 0) {
+            spawnTimer = 4;
+            EnemyManager.SpawnRow(gameObjects, WINDOW_WIDTH, 100, 100);
+        }
+        collisionManager.performCollisionDetection(gameObjects);
         for (GameObject gameObject : gameObjects) {
             gameObject.update(deltaTime);
         }
         CullInactiveObjects();
         window.fireHeldArrowKeys();
-        collisionManager.performCollisionDetection(gameObjects);
     }
     
     public class GamePanel extends JPanel {
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            // Clear the screen
-            g.setColor(java.awt.Color.BLACK);
-            g.fillRect(0, 0, getWidth(), getHeight());
-            
-            for (GameObject gameObject: gameObjects) {
-                gameObject.draw(g);
-            }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        // Clear the screen
+        g.setColor(java.awt.Color.BLACK);
+        g.fillRect(0, 0, getWidth(), getHeight());
+
+        // Create a copy of the gameObjects collection
+        List<GameObject> gameObjectsCopy = new ArrayList<>(gameObjects);
+        
+        // Iterate over the copied collection
+        for (GameObject gameObject : gameObjectsCopy) {
+            gameObject.draw(g);
         }
     }
+}
 }

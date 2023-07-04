@@ -12,29 +12,35 @@ public class Spaceship extends Collidable implements GameObject{
     public Spaceship(float x, float y, List<GameObject> gameObjects) {
         this.x = x;
         this.y = y;
-        this.radius = 50;
+        this.radius = 20;
         this.gameObjects = gameObjects;
     }
     
     @Override
-     public void draw(Graphics g) {
+    public void draw(Graphics g) {
+        if(!isActive)
+            return;
         g.drawImage(image, (int) (x - radius), (int) (y - radius), 2 * (int)radius, 2 * (int)radius, null);   
     }
     
     @Override
     public void update(double deltaTime) {
+        if(!isActive)
+            return;
         // Implement update logic for the Spaceship based on the elapsed time
         // For example:
         x += velocityX * deltaTime;
         y += velocityY * deltaTime;
-        if (super.hasCollided()) {
+        if (hasCollided()) {
             takeDamage(1);
         }
     }
    
     public void shoot(boolean up) {
+        if(!isActive)
+            return;
         float offset = up ? -radius : radius;
-        offset *= 1.1f;
+        offset *= 1.5f;
         Bullet bullet = bulletPool.getObject();
         bullet.Init((int) x, (int) (y + offset), up);
         gameObjects.add(bullet);
