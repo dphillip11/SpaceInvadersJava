@@ -44,7 +44,7 @@ public void keyPressed(KeyEvent e) {
 
     private void handleKeyInput(int keyCode) {
         if (keyCode == KeyEvent.VK_ESCAPE) {
-            dispose(); // Close the window
+            GameApplication.showSplashScreen();
         } else if (keyCode == KeyEvent.VK_UP) {
             inputHandler.dispatch(Input.UP);
         } else if (keyCode == KeyEvent.VK_DOWN) {
