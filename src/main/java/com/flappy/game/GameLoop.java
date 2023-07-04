@@ -1,4 +1,6 @@
 package com.flappy.game;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 
 import javax.swing.*;
 import java.awt.Graphics;
@@ -10,14 +12,14 @@ public class GameLoop {
     private int TARGET_FPS = 60;
     private final float startPosX = 0.5f;
     private final float startPosY = 0.8f;
-    public static final int WINDOW_HEIGHT = 1080;
-    public static final int WINDOW_WIDTH = 1920;
+    public static int WINDOW_HEIGHT = 720;
+    public static int WINDOW_WIDTH = 1024;
     private Window window = new Window();
     private boolean running;
     public GamePanel gamePanel = new GamePanel();
     private List<GameObject> gameObjects = new ArrayList<>();
-    private CollisionManager collisionManager = new CollisionManager(WINDOW_WIDTH, WINDOW_HEIGHT, 5);
-    double spawnTimer = 5;
+    private CollisionManager collisionManager;;
+    double spawnTimer = 0;
     
     public void start() {
         //setup window
@@ -25,14 +27,27 @@ public class GameLoop {
         window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         window.add(gamePanel);
         window.setVisible(true);
+
+        // Get the default graphics device
+        GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+
+        // Check if fullscreen is supported
+        if (graphicsDevice.isFullScreenSupported()) {
+            // Set the window to fullscreen
+            graphicsDevice.setFullScreenWindow(window);
+        }
+
+        WINDOW_HEIGHT = window.getHeight();
+        WINDOW_WIDTH = window.getWidth();
+
+        //initialize collision manager
+        collisionManager = new CollisionManager(WINDOW_WIDTH, WINDOW_HEIGHT, 5);
+
         //initialize player
         Point position = window.convertToScreenPos(startPosX, startPosY);
         PlayerShip player = new PlayerShip(position.x, position.y, gameObjects);
         gameObjects.add(player);
         window.inputHandler.addListener(player);
-        //spawn an enemy
-        gameObjects.add(new Enemy(200, 100, gameObjects));
-        EnemyManager.SpawnRow(gameObjects, WINDOW_WIDTH, 40, 50);
 
         running = true;
         
@@ -66,19 +81,28 @@ public class GameLoop {
     }
     
     private void update(double deltaTime) {
-        // Update game logic here
-        spawnTimer -= deltaTime;
-        if (spawnTimer <= 0) {
-            spawnTimer = 4;
-            EnemyManager.SpawnRow(gameObjects, WINDOW_WIDTH, 100, 100);
-        }
-        collisionManager.performCollisionDetection(gameObjects);
-        for (GameObject gameObject : gameObjects) {
-            gameObject.update(deltaTime);
-        }
-        CullInactiveObjects();
-        window.fireHeldArrowKeys();
+    // spawn enemies
+    spawnTimer -= deltaTime;
+    if (spawnTimer <= 0) {
+        spawnTimer = 4;
+        EnemyManager.SpawnRow(gameObjects, WINDOW_WIDTH, 100, 100);
     }
+    // check collisions
+    collisionManager.performCollisionDetection(gameObjects);
+    
+    // Create a copy of the gameObjects list
+    List<GameObject> gameObjectsCopy = new ArrayList<>(gameObjects);
+    
+    // Iterate over the copied list
+    for (GameObject gameObject : gameObjectsCopy) {
+        gameObject.update(deltaTime);
+    }
+    
+    // remove inactive objects
+    CullInactiveObjects();
+    // repeat input for pressed keys
+    window.fireHeldArrowKeys();
+}
     
     public class GamePanel extends JPanel {
     @Override
@@ -93,7 +117,8 @@ public class GameLoop {
         
         // Iterate over the copied collection
         for (GameObject gameObject : gameObjectsCopy) {
-            gameObject.draw(g);
+            if (gameObject != null && gameObject.isActive())
+                gameObject.draw(g);
         }
     }
 }

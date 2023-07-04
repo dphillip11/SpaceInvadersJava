@@ -35,6 +35,12 @@ public class Collidable {
     if (type == ObjectType.BULLET_FRIENDLY && otherType == ObjectType.PLAYER) {
         return;
     }
+    if (type == ObjectType.PLAYER && otherType == ObjectType.BULLET_FRIENDLY) {
+        return;
+    }
+    if (type == ObjectType.ENEMY && otherType == ObjectType.BULLET_ENEMY) {
+        return;
+    }
     hasCollided = true;
 }
 
@@ -93,12 +99,14 @@ public class Collidable {
                 velocityX = -velocityX;
             }
         }
+        if (y > GameLoop.WINDOW_HEIGHT - 3 *radius) {
+            if (type == ObjectType.PLAYER) {
+                y = GameLoop.WINDOW_HEIGHT - 3 * radius;
+            }
+        }
         if (y > GameLoop.WINDOW_HEIGHT + radius) {
             if (type == ObjectType.ENEMY || type == ObjectType.BULLET_ENEMY) {
                 isActive = false;
-            }
-            if (type == ObjectType.PLAYER) {
-                y = GameLoop.WINDOW_HEIGHT - radius;
             }
         }
         if (y - radius < 0) {

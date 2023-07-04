@@ -39,9 +39,9 @@ public class Spaceship extends Collidable implements GameObject{
     public void shoot(boolean up) {
         if(!isActive)
             return;
-        float offset = up ? -radius : radius;
-        offset *= 1.5f;
         Bullet bullet = bulletPool.getObject();
+        float offset = 2 * bullet.radius + radius + 5;
+        offset = up ? -offset : offset;
         bullet.Init((int) x, (int) (y + offset), up);
         gameObjects.add(bullet);
     }

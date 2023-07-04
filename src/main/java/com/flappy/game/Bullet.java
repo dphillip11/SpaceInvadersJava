@@ -4,23 +4,21 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Bullet extends Collidable implements GameObject {
-    public static final float MAX_RANGE = 1000;
-    private float speed = 600;
-    private float range = MAX_RANGE;
+    private float speed = 800;
 
     public void Init(int x, int y, boolean up) {
         this.x = x;
         this.y = y;
-        this.radius = 5;
-        isActive = true;
-        range = MAX_RANGE;
+        this.radius = 4;
         if (up) {
             speed = Math.abs(speed);
-            type = ObjectType.BULLET_ENEMY;
+            type = ObjectType.BULLET_FRIENDLY;
         } else {
             speed = -Math.abs(speed);
-            type = ObjectType.BULLET_FRIENDLY;
+            type = ObjectType.BULLET_ENEMY;
         }
+        isActive = true;
+        hasCollided = false;
     }
 
     @Override
@@ -37,10 +35,6 @@ public class Bullet extends Collidable implements GameObject {
             return;
         float step = speed * (float) deltaTime;
         y -= step;
-        range -= step;
-        if (range <= 0) {
-            isActive = false;
-        }
         if (hasCollided) {
             isActive = false;
         }
@@ -60,10 +54,6 @@ public class Bullet extends Collidable implements GameObject {
     @Override
     public void takeDamage(int damage) {
         isActive = false;
-    }
-
-    public float getRange() {
-        return range;
     }
 
     public float getSpeed() {

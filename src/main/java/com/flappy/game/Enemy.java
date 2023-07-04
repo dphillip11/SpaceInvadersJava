@@ -22,6 +22,9 @@ public class Enemy extends Spaceship {
         if (hasCollided()) {
             isActive = false;
         }
+        if (Math.random()>0.995) {
+            shoot(false);
+        }
 
     }
 }

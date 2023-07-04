@@ -56,7 +56,6 @@ class GameApplicationTests {
 		assertTrue(bullet.isActive());
 		assertEquals(100, bullet.getX());
 		assertEquals(200, bullet.getY());
-		assertEquals(Bullet.MAX_RANGE, bullet.getRange());
 	}
 
 	@Test
@@ -67,7 +66,6 @@ class GameApplicationTests {
 		bullet.update(1.0); // deltaTime = 1 second
 		
 		assertEquals(200 - bullet.getSpeed(), bullet.getY());
-		assertEquals(Bullet.MAX_RANGE - bullet.getSpeed(), bullet.getRange());
 	}
 
 	@Test
