@@ -21,7 +21,7 @@ public class EnemyManager {
         for (int i = 0; i < num_enemies; i++) {
             GameState.gameObjects.add(new EnemyShip());
             //set enemy velocity
-            gameObjects.get(gameObjects.size() - 1).setPosition(new Vector2(start + i * spacing, -20));
+            gameObjects.get(gameObjects.size() - 1).setPosition(new Vector2(start + i * spacing, 100));
             gameObjects.get(gameObjects.size() - 1).setVelocity(new Vector2(x_velocity, speed));
         }
     }

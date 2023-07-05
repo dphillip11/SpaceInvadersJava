@@ -28,6 +28,7 @@ public class InputHandler implements KeyListener {
     }
 
     public void keyPressed(KeyEvent e) {
+        System.out.println("key pressed");
         int keyCode = e.getKeyCode();
         if (keyCode >= 0 && keyCode < keys.length) {
             if (!keys[keyCode]) {
@@ -38,6 +39,7 @@ public class InputHandler implements KeyListener {
     }
 
     public void keyReleased(KeyEvent e) {
+        System.out.println("key pressed");
         int keyCode = e.getKeyCode();
         if (keyCode >= 0 && keyCode < keys.length) {
             keys[keyCode] = false;
@@ -45,6 +47,7 @@ public class InputHandler implements KeyListener {
     }
 
     public void keyTyped(KeyEvent e) {
+        System.out.println("key pressed");
     }
 
     private void handleKeyInput(int keyCode) {

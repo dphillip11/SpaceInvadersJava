@@ -10,6 +10,8 @@ import SpaceEvaders.GameState.Constants;
 import SpaceEvaders.GameState.GameState;
 import SpaceEvaders.Systems.CollisionSystem.CollisionManager;
 import SpaceEvaders.Systems.EnemyManager.EnemyManager;
+import SpaceEvaders.Systems.RenderingSystem.ObjectRenderer;
+import SpaceEvaders.Systems.PhysicsManager.Physics;
 import SpaceEvaders.UI.Window;
 
 import java.awt.Graphics;
@@ -62,10 +64,10 @@ public class GameLoop {
             lastTime = now;
 
             while (delta >= 1) {
-                update(delta/Constants.targetFPS);
+                Physics.UpdatePositions(delta/Constants.targetFPS, GameState.gameObjects);
                 delta--;
             }
-
+            ObjectRenderer.render(gamePanel.getGraphics(), GameState.gameObjects);
             gamePanel.repaint();
         }
     }

@@ -11,7 +11,9 @@ public class Variables {
     public static int maxPlayerHealth = 10;
 
     public static float playerSpeed = 100;
-    public static Vector2 playerSize = new Vector2(50, 50);
+    public static Vector2 playerSize = new Vector2(10, 10);
+
+     public static Vector2 enemySize = new Vector2(10, 10);
 
     public static float playerBulletSpeed = 500;
     public static float playerBulletRadius = 1;
