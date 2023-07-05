@@ -10,8 +10,8 @@ public class Spaceship extends CollidableObject {
         isActive = false;
     }
 
-    public void shoot(Vector2 speed, Vector2 position, float radius, boolean isFriendly) {
-        GameState.eventHandler.notify(EventType.SHOOT, speed, position, radius, isFriendly);
+    public void shoot(Vector2 speed, Vector2 pos, Vector2 rad, boolean isFriendly) {
+        GameState.eventHandler.notify(EventType.SHOOT, speed, pos, rad, isFriendly);
     }
 
 }

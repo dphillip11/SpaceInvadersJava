@@ -14,7 +14,7 @@ public class BulletManager implements EventListener {
             Vector2 position = (Vector2) args[1];
             Vector2 radius = (Vector2) args[2];
             boolean isFriendly = (boolean) args[3];
-            GameState.gameObjects.add(new Bullet(speed, position, radius, isFriendly));
+            GameState.gameObjects.add(new Bullet(position, speed, radius, isFriendly));
         }
     }
 }

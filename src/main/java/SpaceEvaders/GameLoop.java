@@ -5,6 +5,7 @@ import java.awt.GraphicsEnvironment;
 import javax.swing.*;
 
 import SpaceEvaders.GameObjects.GameObject;
+import SpaceEvaders.GameObjects.CollidableObject;
 import SpaceEvaders.GameObjects.PlayerShip;
 import SpaceEvaders.GameState.Constants;
 import SpaceEvaders.GameState.GameState;
@@ -12,6 +13,7 @@ import SpaceEvaders.Systems.CollisionSystem.CollisionManager;
 import SpaceEvaders.Systems.EnemyManager.EnemyManager;
 import SpaceEvaders.Systems.RenderingSystem.ObjectRenderer;
 import SpaceEvaders.Systems.PhysicsManager.Physics;
+
 import SpaceEvaders.UI.Window;
 
 import java.awt.Graphics;
@@ -64,10 +66,12 @@ public class GameLoop {
             lastTime = now;
 
             while (delta >= 1) {
-                Physics.UpdatePositions(delta/Constants.targetFPS, GameState.gameObjects);
+                Physics.UpdatePositions(delta / Constants.targetFPS, GameState.gameObjects);
+                update(delta / Constants.targetFPS);
+                collisionManager.performCollisionDetection(GameState.gameObjects);
+                CullInactiveObjects();
                 delta--;
             }
-            ObjectRenderer.render(gamePanel.getGraphics(), GameState.gameObjects);
             gamePanel.repaint();
         }
     }
@@ -77,6 +81,7 @@ public class GameLoop {
         Iterator<GameObject> iterator = GameState.gameObjects.iterator();
         while (iterator.hasNext()) {
             GameObject gameObject = iterator.next();
+            ((CollidableObject)gameObject).applyCollision();
             if (!gameObject.isActive()) {
                 iterator.remove();
             }
@@ -103,10 +108,12 @@ public class GameLoop {
     public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
+       
         super.paintComponent(g);
         // Clear the screen
         g.setColor(java.awt.Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
+         ObjectRenderer.render(g, GameState.gameObjects);
     }
 }
 }

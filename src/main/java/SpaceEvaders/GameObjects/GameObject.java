@@ -12,6 +12,7 @@ public abstract class GameObject {
     protected Vector2 velocity = new Vector2(0, 0);
     protected Vector2 radius = new Vector2(1, 1);
     protected boolean isActive = true;
+    
     public Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/enemy1.png"));
   
     public void move(Vector2 distance)

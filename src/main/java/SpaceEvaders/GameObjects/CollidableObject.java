@@ -32,25 +32,30 @@ public abstract class CollidableObject extends GameObject {
         this.hasCollided = hasCollided;
     }
     
-     public void Collide(ObjectType otherType) {
-    if (type == otherType) {
-        return;
-    }
-    if (type == ObjectType.BULLET_ENEMY && otherType == ObjectType.ENEMY) {
-        return;
-    }
-    if (type == ObjectType.BULLET_FRIENDLY && otherType == ObjectType.PLAYER) {
-        return;
-    }
-    if (type == ObjectType.PLAYER && otherType == ObjectType.BULLET_FRIENDLY) {
-        return;
-    }
-    if (type == ObjectType.ENEMY && otherType == ObjectType.BULLET_ENEMY) {
-        return;
-    }
-    hasCollided = true;
+    public void Collide(ObjectType otherType) {
+        if (type == otherType) {
+            return;
+        }
+        if (type == ObjectType.BULLET_ENEMY && otherType == ObjectType.ENEMY) {
+            return;
+        }
+        if (type == ObjectType.BULLET_FRIENDLY && otherType == ObjectType.PLAYER) {
+            return;
+        }
+        if (type == ObjectType.PLAYER && otherType == ObjectType.BULLET_FRIENDLY) {
+            return;
+        }
+        if (type == ObjectType.ENEMY && otherType == ObjectType.BULLET_ENEMY) {
+            return;
+        }
+        hasCollided = true;
     }
 
+    public void applyCollision() {
+        if (hasCollided) {
+            takeDamage(1);
+        }
+    }
     public void takeDamage(int damage) {
         hasCollided = false;
         assert damage >= 0;

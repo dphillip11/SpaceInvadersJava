@@ -4,8 +4,8 @@ import java.awt.Toolkit;
 
 import SpaceEvaders.GameState.GameState;
 import SpaceEvaders.GameState.Variables;
-import SpaceEvaders.Systems.EventsSystem.Input;
-import SpaceEvaders.Systems.EventsSystem.InputListener;
+import SpaceEvaders.Systems.InputHandler.Input;
+import SpaceEvaders.Systems.InputHandler.InputListener;
 import SpaceEvaders.Utilities.Vector2;
 
 public class PlayerShip extends Spaceship implements InputListener {
@@ -14,8 +14,16 @@ public class PlayerShip extends Spaceship implements InputListener {
     {
         image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/spaceship.png"));
         radius = Variables.playerSize;
+        type = ObjectType.PLAYER;
         GameState.inputHandler.addListener(this);
+        setHealth(Variables.maxPlayerHealth);
     }
+
+    @Override
+    public void setPosition(Vector2 position) {
+        this.position = position;
+        setVelocity(new Vector2(0,0));
+    } //
 
     @Override
     public void onKeyPressed(Input input) {
@@ -33,7 +41,8 @@ public class PlayerShip extends Spaceship implements InputListener {
             velocity = new Vector2(Variables.playerSpeed, velocity.y);
         }
         if (input == Input.SPACE) {
-            shoot(new Vector2(0, -Variables.playerBulletSpeed), position.subtract(new Vector2(0, radius.y / 2)), Variables.playerBulletRadius, true);
+            float offsetY = Variables.playerBulletRadius.y + radius.y;
+            shoot(new Vector2(0, -Variables.playerBulletSpeed), position.subtract(new Vector2(0,offsetY)), Variables.playerBulletRadius, true);
         }
     }
 }
