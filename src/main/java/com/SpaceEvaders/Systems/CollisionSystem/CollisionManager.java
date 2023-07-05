@@ -1,8 +1,12 @@
-package com.flappy.game;
+package com.SpaceEvaders.Systems.CollisionSystem;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.flappy.game.GameObject.ObjectType;
+
+import com.SpaceEvaders.Utilities.Vector2;
+import com.SpaceEvaders.GameObjects.CollidableObject;
+import com.SpaceEvaders.GameObjects.GameObject;
+import com.SpaceEvaders.GameObjects.ObjectType;
 
 public class CollisionManager {
     private int numRows;
@@ -35,26 +39,24 @@ public class CollisionManager {
         }
     }
 
-    public void performCollisionDetection(List<GameObject> gameObjects) {
-        allocateObjectsToGrid(gameObjects);
-        applyCollisions(gameObjects);
+    public void performCollisionDetection(List<GameObject> objects) {
+        allocateObjectsToGrid(objects);
+        applyCollisions(objects);
         clearGrid(grid);
     }
 
     public void allocateObjectsToGrid(List<GameObject> gameObjects) {
         for (int i = 0; i < gameObjects.size(); i++) {
-            GameObject object = gameObjects.get(i);
+            CollidableObject object = (CollidableObject)gameObjects.get(i);
             if (!object.isActive())
                 continue;
-            int minX = object.GetMinX();
-            int minY = object.GetMinY();
-            int maxX = object.GetMaxX();
-            int maxY = object.GetMaxY();
+            Vector2 min = object.getMinPos();
+            Vector2 max = object.getMaxPos();
 
-            int startRow = Math.max(0, minY / cellSize);
-            int endRow = Math.min(numRows - 1, maxY / cellSize);
-            int startCol = Math.max(0, minX / cellSize);
-            int endCol = Math.min(numCols - 1, maxX / cellSize);
+            int startRow = Math.max(0, (int)min.y / cellSize);
+            int endRow = Math.min(numRows - 1, (int)max.y / cellSize);
+            int startCol = Math.max(0, (int)min.x / cellSize);
+            int endCol = Math.min(numCols - 1, (int)max.x / cellSize);
 
             for (int row = startRow; row <= endRow; row++) {
                 for (int col = startCol; col <= endCol; col++) {
@@ -74,7 +76,7 @@ public class CollisionManager {
                 List<ObjectType> cellObjectTypes = objectTypeGrid.get(row).get(col);
                 if (cellObjects.size() > 1) {
                     for (int objectIndex : cellObjects) {
-                        GameObject object = gameObjects.get(objectIndex);
+                        CollidableObject object = (CollidableObject)gameObjects.get(objectIndex);
                         if (object.hasCollided())
                         {
                             continue;

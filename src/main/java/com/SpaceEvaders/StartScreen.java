@@ -1,4 +1,4 @@
-package com.flappy.game;
+package com.SpaceEvaders;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +34,7 @@ public class StartScreen extends JPanel {
         exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Stop the game loop and exit the application
-                GameApplication.stopGame();
+                Application.stopGame();
                 SwingUtilities.getWindowAncestor(StartScreen.this).dispose();
             }
         });

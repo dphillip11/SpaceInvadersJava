@@ -1,4 +1,4 @@
-package com.flappy.game;
+package com.SpaceEvaders;
 
 import javax.swing.JFrame;
 
@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class GameApplication {
+public class Application {
 
 	public static void main(String[] args) {
 		//display splash screen

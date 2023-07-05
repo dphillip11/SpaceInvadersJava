@@ -1,4 +1,9 @@
-package com.flappy.game;
+package com.SpaceEvaders.Systems.EnemyManager;
+
+import com.SpaceEvaders.GameObjects.GameObject;
+import com.SpaceEvaders.GameObjects.EnemyShip;
+import com.SpaceEvaders.GameState.GameState;
+import com.SpaceEvaders.Utilities.Vector2;
 
 import java.util.List;
 
@@ -14,9 +19,10 @@ public class EnemyManager {
         int start = (int) (Math.random() * spacing);
         //create enemies
         for (int i = 0; i < num_enemies; i++) {
-            gameObjects.add(new Enemy(start + (i * spacing), 0, gameObjects));
+            GameState.gameObjects.add(new EnemyShip());
             //set enemy velocity
-            gameObjects.get(gameObjects.size() - 1).SetSpeed(x_velocity, speed);
+            gameObjects.get(gameObjects.size() - 1).setPosition(new Vector2(start + i * spacing, -20));
+            gameObjects.get(gameObjects.size() - 1).setVelocity(new Vector2(x_velocity, speed));
         }
     }
 
