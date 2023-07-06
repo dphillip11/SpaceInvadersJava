@@ -20,6 +20,7 @@ public class SL {
     public static void init() {
         eventHandler.init();
         inputHandler.init();
+        audioManager.init();
         eventHandler.addListener(audioManager);
     }
 }

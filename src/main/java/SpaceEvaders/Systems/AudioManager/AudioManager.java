@@ -17,7 +17,7 @@ public class AudioManager extends PlayEventListener {
     public AudioManager() {
         init();
     }
-    
+
 
     public void init() {
         try {

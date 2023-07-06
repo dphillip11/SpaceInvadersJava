@@ -82,6 +82,7 @@ public class PlayState implements IState, InputListener {
         Physics.UpdatePositions(deltaTime, gameObjects);
         collisionManager.performCollisionDetection(gameObjects);
         CullInactiveObjects();
+        EnemyManager.UpdateEnemyVelocities(gameObjects);
         spawnTimer -= deltaTime;
         if (spawnTimer <= 0) {
             spawnTimer = 4;
@@ -110,6 +111,7 @@ public class PlayState implements IState, InputListener {
             iterator.remove(); // Use the iterator's remove method
         }
     }
+
 }
 }
     
