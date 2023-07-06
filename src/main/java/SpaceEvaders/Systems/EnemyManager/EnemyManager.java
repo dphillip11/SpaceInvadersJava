@@ -2,7 +2,6 @@ package SpaceEvaders.Systems.EnemyManager;
 
 import java.util.List;
 
-import SpaceEvaders.CommonState.GameState;
 import SpaceEvaders.GameObjects.EnemyShip;
 import SpaceEvaders.GameObjects.GameObject;
 import SpaceEvaders.Utilities.Vector2;
@@ -19,7 +18,7 @@ public class EnemyManager {
         int start = (int) (Math.random() * spacing);
         //create enemies
         for (int i = 0; i < num_enemies; i++) {
-            GameState.gameObjects.add(new EnemyShip());
+            gameObjects.add(new EnemyShip());
             //set enemy velocity
             gameObjects.get(gameObjects.size() - 1).setPosition(new Vector2(start + i * spacing, 100));
             gameObjects.get(gameObjects.size() - 1).setVelocity(new Vector2(x_velocity, speed));

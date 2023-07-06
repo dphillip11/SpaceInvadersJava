@@ -1,4 +1,4 @@
-package SpaceEvaders.Systems.States;
+package SpaceEvaders.States;
 
 import SpaceEvaders.Systems.StateMachine.IState;
 

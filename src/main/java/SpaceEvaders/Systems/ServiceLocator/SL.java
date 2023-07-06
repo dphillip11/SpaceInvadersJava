@@ -1,7 +1,6 @@
 package SpaceEvaders.Systems.ServiceLocator;
 
 import SpaceEvaders.Systems.AudioManager.AudioManager;
-import SpaceEvaders.Systems.BulletManager.BulletManager;
 import SpaceEvaders.Systems.EventsSystem.EventHandler;
 import SpaceEvaders.Systems.InputHandler.InputHandler;
 import SpaceEvaders.Systems.StateMachine.StateMachine;

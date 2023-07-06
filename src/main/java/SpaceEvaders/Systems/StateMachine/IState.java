@@ -1,6 +1,6 @@
 package SpaceEvaders.Systems.StateMachine;
 
-import SpaceEvaders.Systems.States.State;
+import SpaceEvaders.States.State;
 
 public interface IState {
     State getState();

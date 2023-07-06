@@ -1,32 +1,36 @@
 package SpaceEvaders.Systems.InputHandler;
 
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.List;
-
-import SpaceEvaders.Systems.ServiceLocator.SL;
-import SpaceEvaders.Systems.EventsSystem.EventType;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 public class InputHandler implements KeyListener {
     private boolean[] keys = new boolean[256];
     private List<InputListener> listeners = new ArrayList<>();
 
-    public void init()
-    {
-        //clear listeners
-        listeners.clear();
+    public void init() {
+        // Clear listeners
+        synchronized (listeners) {
+            listeners.clear();
+        }
         Arrays.fill(keys, false);
     }
-    
+
     public void addListener(InputListener listener) {
-        listeners.add(listener);
+        synchronized (listeners) {
+            listeners.add(listener);
+        }
     }
 
     public void dispatch(Input input) {
-        for (InputListener listener : listeners) {
+        List<InputListener> copyListeners;
+        synchronized (listeners) {
+            copyListeners = new ArrayList<>(listeners);
+        }
+
+        for (InputListener listener : copyListeners) {
             listener.onKeyPressed(input);
         }
     }
@@ -34,9 +38,11 @@ public class InputHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
         if (keyCode >= 0 && keyCode < keys.length) {
-            if (!keys[keyCode]) {
-                keys[keyCode] = true;
-                handleKeyInput(keyCode);
+            synchronized (keys) {
+                if (!keys[keyCode]) {
+                    keys[keyCode] = true;
+                    handleKeyInput(keyCode);
+                }
             }
         }
     }
@@ -44,18 +50,22 @@ public class InputHandler implements KeyListener {
     public void keyReleased(KeyEvent e) {
         int keyCode = e.getKeyCode();
         if (keyCode >= 0 && keyCode < keys.length) {
-            keys[keyCode] = false;
+            synchronized (keys) {
+                keys[keyCode] = false;
+            }
         }
     }
 
     public void keyTyped(KeyEvent e) {
+        // Do nothing
     }
 
     private void handleKeyInput(int keyCode) {
         if (keyCode == KeyEvent.VK_ESCAPE) {
             dispatch(Input.ESCAPE);
-            SL.eventHandler.notify(EventType.EXIT);
-        } else if (keyCode == KeyEvent.VK_UP) {
+        } if (keyCode == KeyEvent.VK_P) {
+            dispatch(Input.PAUSE);
+        }else if (keyCode == KeyEvent.VK_UP) {
             dispatch(Input.UP);
         } else if (keyCode == KeyEvent.VK_DOWN) {
             dispatch(Input.DOWN);
@@ -65,9 +75,6 @@ public class InputHandler implements KeyListener {
             dispatch(Input.RIGHT);
         } else if (keyCode == KeyEvent.VK_SPACE) {
             dispatch(Input.SPACE);
-        }
-        else if (keyCode == KeyEvent.VK_P) {
-            dispatch(Input.PAUSE);
         }
     }
 
@@ -86,3 +93,4 @@ public class InputHandler implements KeyListener {
         }
     }
 }
+

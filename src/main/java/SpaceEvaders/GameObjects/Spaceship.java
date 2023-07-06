@@ -5,6 +5,7 @@ import SpaceEvaders.Systems.EventsSystem.EventType;
 import SpaceEvaders.Utilities.Vector2;
 
 
+
 public class Spaceship extends CollidableObject {
     public void die() {
         isActive = false;

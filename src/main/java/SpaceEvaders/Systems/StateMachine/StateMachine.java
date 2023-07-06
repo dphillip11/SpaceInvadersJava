@@ -1,10 +1,10 @@
 package SpaceEvaders.Systems.StateMachine;
 
-import SpaceEvaders.Systems.States.NullState;
+import SpaceEvaders.States.NullState;
 
 public class 
 StateMachine {
-    
+
     public IState currentState = new NullState();
 
     public void update(double time) {

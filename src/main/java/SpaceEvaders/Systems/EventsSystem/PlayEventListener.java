@@ -1,10 +1,11 @@
 package SpaceEvaders.Systems.EventsSystem;
 
-import SpaceEvaders.CommonState.GameState;
+import SpaceEvaders.States.*;
+import SpaceEvaders.Systems.ServiceLocator.*;
 
 public abstract class PlayEventListener implements EventListener {
     public final void onEvent(EventType eventType, Object... args) {
-        if (!GameState.paused) {
+        if (SL.stateMachine.currentState.getState() == State.PLAY) {
             onPlayEvent(eventType, args);
         }
     }

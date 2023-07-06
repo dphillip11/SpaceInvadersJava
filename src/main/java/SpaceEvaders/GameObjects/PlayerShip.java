@@ -3,7 +3,6 @@ package SpaceEvaders.GameObjects;
 import java.awt.Toolkit;
 
 import SpaceEvaders.Systems.ServiceLocator.SL;
-import SpaceEvaders.CommonState.GameState;
 import SpaceEvaders.CommonState.Variables;
 import SpaceEvaders.Systems.EventsSystem.EventType;
 import SpaceEvaders.Systems.InputHandler.Input;

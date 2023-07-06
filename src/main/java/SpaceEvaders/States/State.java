@@ -1,4 +1,4 @@
-package SpaceEvaders.Systems.States;
+package SpaceEvaders.States;
 
 public enum State {
     SPLASH,
