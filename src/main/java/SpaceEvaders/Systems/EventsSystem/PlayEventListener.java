@@ -1,6 +1,6 @@
 package SpaceEvaders.Systems.EventsSystem;
 
-import SpaceEvaders.GameState.GameState;
+import SpaceEvaders.CommonState.GameState;
 
 public abstract class PlayEventListener implements EventListener {
     public final void onEvent(EventType eventType, Object... args) {

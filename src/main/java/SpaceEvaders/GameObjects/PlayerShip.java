@@ -2,10 +2,10 @@ package SpaceEvaders.GameObjects;
 
 import java.awt.Toolkit;
 
-import SpaceEvaders.GameState.GameState;
 import SpaceEvaders.Systems.ServiceLocator.SL;
+import SpaceEvaders.CommonState.GameState;
+import SpaceEvaders.CommonState.Variables;
 import SpaceEvaders.Systems.EventsSystem.EventType;
-import SpaceEvaders.GameState.Variables;
 import SpaceEvaders.Systems.InputHandler.Input;
 import SpaceEvaders.Systems.InputHandler.InputListener;
 import SpaceEvaders.Utilities.Vector2;

@@ -2,9 +2,9 @@ package SpaceEvaders.Systems.EnemyManager;
 
 import java.util.List;
 
+import SpaceEvaders.CommonState.GameState;
 import SpaceEvaders.GameObjects.EnemyShip;
 import SpaceEvaders.GameObjects.GameObject;
-import SpaceEvaders.GameState.GameState;
 import SpaceEvaders.Utilities.Vector2;
 
 public class EnemyManager {

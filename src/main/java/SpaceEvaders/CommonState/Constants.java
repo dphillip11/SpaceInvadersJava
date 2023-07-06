@@ -1,4 +1,4 @@
-package SpaceEvaders.GameState;
+package SpaceEvaders.CommonState;
 
 public class Constants {
     public static int screenWidth = 1024;

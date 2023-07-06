@@ -1,7 +1,7 @@
 package SpaceEvaders.Systems.AudioManager;
 
 import SpaceEvaders.Systems.EventsSystem.PlayEventListener;
-import SpaceEvaders.GameState.Variables;
+import SpaceEvaders.CommonState.Variables;
 import SpaceEvaders.Systems.EventsSystem.EventType;
 import java.io.File;
 import javax.sound.sampled.*;

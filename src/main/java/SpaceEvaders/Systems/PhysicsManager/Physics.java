@@ -1,5 +1,6 @@
 package SpaceEvaders.Systems.PhysicsManager;
 
+import SpaceEvaders.CommonState.Constants;
 import SpaceEvaders.GameObjects.CollidableObject;
 import SpaceEvaders.GameObjects.GameObject;
 import java.util.List;
@@ -8,7 +9,6 @@ import org.yaml.snakeyaml.scanner.Constant;
 
 import SpaceEvaders.Utilities.Vector2;
 import SpaceEvaders.GameObjects.ObjectType;
-import SpaceEvaders.GameState.Constants;
 
 public class Physics {
     public static void UpdatePositions(double deltaTime, List<GameObject> gameObjects) {

@@ -1,4 +1,4 @@
-package SpaceEvaders.GameState;
+package SpaceEvaders.CommonState;
 
 import SpaceEvaders.Utilities.Vector2;
 

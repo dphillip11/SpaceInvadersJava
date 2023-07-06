@@ -2,7 +2,8 @@ package SpaceEvaders.UI;
 
 import javax.swing.*;
 import java.awt.*;
-import SpaceEvaders.GameState.Constants;
+
+import SpaceEvaders.CommonState.Constants;
 import SpaceEvaders.Systems.ServiceLocator.SL;
     
 public class Window extends JFrame{

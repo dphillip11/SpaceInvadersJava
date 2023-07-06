@@ -8,4 +8,5 @@ public enum EventType {
     ENEMY_DESTROYED,
     PAUSED,
     RESUME,
+    EXIT,
 }

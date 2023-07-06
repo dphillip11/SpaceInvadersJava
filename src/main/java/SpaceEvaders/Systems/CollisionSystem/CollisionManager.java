@@ -70,18 +70,18 @@ public class CollisionManager {
     }
 
     private void applyCollisions(List<GameObject> gameObjects) {
-        for (int row = 0; row < numRows; row++) {
-            for (int col = 0; col < numCols; col++) {
-                List<Integer> cellObjects = grid.get(row).get(col);
-                List<ObjectType> cellObjectTypes = objectTypeGrid.get(row).get(col);
-                if (cellObjects.size() > 1) {
-                    for (int objectIndex : cellObjects) {
-                        CollidableObject object = (CollidableObject)gameObjects.get(objectIndex);
-                        if (object.hasCollided())
-                        {
+    for (int row = 0; row < numRows; row++) {
+        for (int col = 0; col < numCols; col++) {
+            List<Integer> cellObjects = grid.get(row).get(col);
+            List<ObjectType> cellObjectTypes = objectTypeGrid.get(row).get(col);
+            if (cellObjects.size() > 1) {
+                for (int objectIndex : cellObjects) {
+                    if (objectIndex >= 0 && objectIndex < gameObjects.size()) {
+                        CollidableObject object = (CollidableObject) gameObjects.get(objectIndex);
+                        if (object.hasCollided()) {
                             continue;
                         }
-                        for(ObjectType otherType : cellObjectTypes) {
+                        for (ObjectType otherType : cellObjectTypes) {
                             object.Collide(otherType);
                         }
                     }
@@ -89,6 +89,8 @@ public class CollisionManager {
             }
         }
     }
+}
+
 
 
     private void clearGrid(List<List<List<Integer>>> grid) {

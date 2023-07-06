@@ -1,6 +1,6 @@
 package SpaceEvaders.GameObjects;
 
-import SpaceEvaders.GameState.Variables;
+import SpaceEvaders.CommonState.Variables;
 
 public class EnemyShip extends Spaceship {
     public EnemyShip() {

@@ -3,6 +3,10 @@ package SpaceEvaders.Systems.InputHandler;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
+
+import SpaceEvaders.Systems.ServiceLocator.SL;
+import SpaceEvaders.Systems.EventsSystem.EventType;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -50,6 +54,7 @@ public class InputHandler implements KeyListener {
     private void handleKeyInput(int keyCode) {
         if (keyCode == KeyEvent.VK_ESCAPE) {
             dispatch(Input.ESCAPE);
+            SL.eventHandler.notify(EventType.EXIT);
         } else if (keyCode == KeyEvent.VK_UP) {
             dispatch(Input.UP);
         } else if (keyCode == KeyEvent.VK_DOWN) {

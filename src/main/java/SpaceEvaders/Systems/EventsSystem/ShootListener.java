@@ -1,6 +1,6 @@
 package SpaceEvaders.Systems.EventsSystem;
 
-import SpaceEvaders.GameState.GameState;
+import SpaceEvaders.CommonState.GameState;
 
 public abstract class ShootListener implements EventListener {
     @Override

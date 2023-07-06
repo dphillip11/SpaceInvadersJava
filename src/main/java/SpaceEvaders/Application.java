@@ -2,26 +2,20 @@ package SpaceEvaders;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import SpaceEvaders.UI.StartScreen;
-
 @SpringBootApplication
 public class Application {
 
+	public static GameLoop game;
+
 	public static void main(String[] args) {
-		//display splash screen
-		 javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new StartScreen();
-            }
-        });
+		startGame();
 	}
 
 	public static void startGame() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				GameLoop game = new GameLoop();
+				game = new GameLoop();
 
-				//create a new thread to keep the GUI responsive while the game runs
 				Thread t = new Thread() {
 					public void run() {
 						game.start();
@@ -32,8 +26,9 @@ public class Application {
 		});
 	}
 
-	public static void stopGame()
+	public static void exit()
 	{
+		game.exitLoop();
 		System.exit(0);
 	}
 }
