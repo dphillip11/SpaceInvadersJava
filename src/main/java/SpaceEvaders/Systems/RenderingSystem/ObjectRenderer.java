@@ -10,6 +10,9 @@ public class ObjectRenderer {
 
     // Render a list of game objects on the given Graphics object
     public static void render(Graphics g, List<GameObject> gameObjects) {
+        if (gameObjects == null) {
+            return;
+        }
         List<GameObject> copy_gameObjects = List.copyOf(gameObjects);
         for (GameObject gameObject : copy_gameObjects) {
             if (gameObject.isActive()) {

@@ -4,17 +4,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
-abstract class ShootListener implements EventListener {
-    @Override
-    public void onEvent(EventType event, Object... args) {
-        if (event == EventType.SHOOT) {
-            onShoot(args);
-        }
-    }
-
-    public abstract void onShoot(Object... args);
-}
-
 public class EventHandler {
     private List<EventListener> eventListeners = Collections.synchronizedList(new ArrayList<>());
 

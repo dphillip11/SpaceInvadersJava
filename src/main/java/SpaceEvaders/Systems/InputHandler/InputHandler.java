@@ -61,6 +61,9 @@ public class InputHandler implements KeyListener {
         } else if (keyCode == KeyEvent.VK_SPACE) {
             dispatch(Input.SPACE);
         }
+        else if (keyCode == KeyEvent.VK_P) {
+            dispatch(Input.PAUSE);
+        }
     }
 
     public void fireHeldArrowKeys() {

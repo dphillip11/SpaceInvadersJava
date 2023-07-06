@@ -7,13 +7,13 @@ import SpaceEvaders.Utilities.Vector2;
 public class Bullet extends CollidableObject{
     public Bullet() {
         setHealth(1);
-        image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Orb.png"));
+        image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/Orb.png"));
         type = ObjectType.BULLET_FRIENDLY;
     }
 
     public Bullet(Vector2 pos, Vector2 vel, Vector2 rad, boolean isFriendly) {
         setHealth(1);
-        image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Orb.png"));
+        image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/Orb.png"));
         init(pos, vel, rad, isFriendly);
     }
 

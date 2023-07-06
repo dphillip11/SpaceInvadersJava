@@ -1,10 +1,9 @@
 package SpaceEvaders;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 
 import javax.swing.*;
 
 import SpaceEvaders.GameObjects.GameObject;
+import SpaceEvaders.Systems.ServiceLocator.SL;
 import SpaceEvaders.GameObjects.CollidableObject;
 import SpaceEvaders.GameObjects.PlayerShip;
 import SpaceEvaders.GameState.Constants;
@@ -21,32 +20,15 @@ import java.util.Iterator;
 
 public class GameLoop {
 
-    private Window window = new Window();
-    private boolean running;
-    public GamePanel gamePanel = new GamePanel();
-    private GameState gameState = new GameState();
+    private Window window = new Window("Space Evaders");
+    public GamePanel gamePanel = new GamePanel(window);
     private CollisionManager collisionManager;
     double spawnTimer = 0;
     
     public void start() {
-        //setup window
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setSize(Constants.screenWidth, Constants.screenHeight);
-        window.add(gamePanel);
-        window.setVisible(true);
-
-        // Get the default graphics device
-        GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-
-        // Check if fullscreen is supported
-        if (graphicsDevice.isFullScreenSupported()) {
-            // Set the window to fullscreen
-            graphicsDevice.setFullScreenWindow(window);
-        }
-
-        Constants.screenHeight = window.getHeight();
-        Constants.screenWidth = window.getWidth();
-
+        GameState gameState = new GameState();
+        gameState.init();
+        
         //initialize collision manager
         collisionManager = new CollisionManager(Constants.screenWidth, Constants.screenHeight, 5);
 
@@ -54,22 +36,27 @@ public class GameLoop {
         PlayerShip player = new PlayerShip();
         GameState.gameObjects.add(player);
 
-        running = true;
+        GameState.running = true;
         
         long lastTime = System.nanoTime();
         double nsPerTick = 1000000000.0 / Constants.targetFPS; // 60 ticks per second
         double delta = 0;
 
-        while (running) {
+        while (GameState.running) {
             long now = System.nanoTime();
             delta += (now - lastTime) / nsPerTick;
             lastTime = now;
 
             while (delta >= 1) {
-                Physics.UpdatePositions(delta / Constants.targetFPS, GameState.gameObjects);
-                update(delta / Constants.targetFPS);
-                collisionManager.performCollisionDetection(GameState.gameObjects);
-                CullInactiveObjects();
+                double deltaTime = 0;
+                if (!GameState.paused)
+                {
+                    deltaTime = delta / Constants.targetFPS;
+                    Physics.UpdatePositions(deltaTime, GameState.gameObjects);
+                    update(deltaTime);
+                    collisionManager.performCollisionDetection(GameState.gameObjects);
+                    CullInactiveObjects();
+                }
                 delta--;
             }
             gamePanel.repaint();
@@ -102,10 +89,15 @@ public class GameLoop {
     // remove inactive objects
     CullInactiveObjects();
     // repeat input for pressed keys
-    GameState.inputHandler.fireHeldArrowKeys();
+    SL.inputHandler.fireHeldArrowKeys();
 }
     
-    public class GamePanel extends JPanel {
+public class GamePanel extends JPanel {
+        
+    GamePanel(Window window) {
+        window.add(this);
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
        

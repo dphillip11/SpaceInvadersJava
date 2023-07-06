@@ -10,7 +10,7 @@ import SpaceEvaders.Utilities.Vector2;
 public class EnemyManager {
     static public void SpawnRow(List<GameObject> gameObjects, int screen_width, int cellSize, float speed) {
         //set random x speed
-        float x_velocity = (float) (Math.random() * speed - speed * 0.5f);
+        float x_velocity = (float) (Math.random() * 4 * speed - speed * 2);
         int max_possible = screen_width / cellSize;
         int num_enemies = Math.max(1,(int) (Math.random() * max_possible));
         //calculate spacing between enemies

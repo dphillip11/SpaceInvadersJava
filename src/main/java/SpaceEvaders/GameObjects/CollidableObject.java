@@ -1,5 +1,8 @@
 package SpaceEvaders.GameObjects;
- 
+
+import SpaceEvaders.Systems.EventsSystem.EventType;
+import SpaceEvaders.Systems.ServiceLocator.SL;
+
 public abstract class CollidableObject extends GameObject {
     protected int health = 1;
     protected int maxHealth = 1;
@@ -47,6 +50,12 @@ public abstract class CollidableObject extends GameObject {
         }
         if (type == ObjectType.ENEMY && otherType == ObjectType.BULLET_ENEMY) {
             return;
+        }
+        if (type == ObjectType.PLAYER && otherType == ObjectType.BULLET_ENEMY) {
+            SL.eventHandler.notify(EventType.PLAYER_HIT);
+        }
+        if (type == ObjectType.ENEMY && otherType == ObjectType.BULLET_FRIENDLY) {
+            SL.eventHandler.notify(EventType.ENEMY_HIT);
         }
         hasCollided = true;
     }

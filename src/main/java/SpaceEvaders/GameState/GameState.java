@@ -3,31 +3,43 @@ package SpaceEvaders.GameState;
 import java.util.List;
 
 import SpaceEvaders.GameObjects.GameObject;
-import SpaceEvaders.Systems.BulletManager.BulletManager;
-import SpaceEvaders.Systems.EventsSystem.EventHandler;
-import SpaceEvaders.Systems.InputHandler.InputHandler;
+import SpaceEvaders.Systems.ServiceLocator.SL;
+import SpaceEvaders.Systems.InputHandler.*;
+import SpaceEvaders.Systems.EventsSystem.*;
 
 import java.util.ArrayList;
 
+public class GameState extends PlayEventListener implements InputListener  {
 
-
-public class GameState {
-
-    public float time = 0;
-    public boolean running = true;
-    public boolean paused = false;
+    public static float time = 0;
+    public static boolean paused = false;
+    public static boolean running = true;
+    public static int score = 0;
 
     public static final List<GameObject> gameObjects = new ArrayList<>();
-    public static final EventHandler eventHandler = new EventHandler();
-    public static final InputHandler inputHandler = new InputHandler();
-    public static final BulletManager bulletManager = new BulletManager();
 
     //calling contructor will clear static fields
-    public GameState() {
+    public void init() {
+        //initialise service locator
+        SL.init();
+        SL.inputHandler.addListener(this);
+        SL.eventHandler.addListener(this);
         gameObjects.clear();
-        eventHandler.init();
-        inputHandler.init();
-        eventHandler.addListener(bulletManager);
+        score = 0;
+    }
+
+    public void onKeyPressed(Input input) {
+        if (input == Input.PAUSE) {
+            paused = !paused;
+            System.out.println("Paused: " + paused);
+        }
+    }
+
+    public void onPlayEvent(EventType event, Object... args) {
+        if (event == EventType.ENEMY_DESTROYED) {
+            score++;
+            System.out.println("Score: " + score);
+        }
     }
 
 }

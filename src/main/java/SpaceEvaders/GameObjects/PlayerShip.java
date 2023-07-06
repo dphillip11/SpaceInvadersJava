@@ -3,6 +3,8 @@ package SpaceEvaders.GameObjects;
 import java.awt.Toolkit;
 
 import SpaceEvaders.GameState.GameState;
+import SpaceEvaders.Systems.ServiceLocator.SL;
+import SpaceEvaders.Systems.EventsSystem.EventType;
 import SpaceEvaders.GameState.Variables;
 import SpaceEvaders.Systems.InputHandler.Input;
 import SpaceEvaders.Systems.InputHandler.InputListener;
@@ -12,11 +14,17 @@ public class PlayerShip extends Spaceship implements InputListener {
 
     public PlayerShip()
     {
-        image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/spaceship.png"));
+        image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/spaceship.png"));
         radius = Variables.playerSize;
         type = ObjectType.PLAYER;
-        GameState.inputHandler.addListener(this);
+        SL.inputHandler.addListener(this);
         setHealth(Variables.maxPlayerHealth);
+    }
+
+    @Override
+    public void die() {
+        SL.eventHandler.notify(EventType.PLAYER_DESTROYED);
+        setActive(false);
     }
 
     @Override

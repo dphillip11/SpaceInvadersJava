@@ -1,5 +1,10 @@
 package SpaceEvaders.Systems.EventsSystem;
 
 public enum EventType {
-    SHOOT
+    SHOOT,
+    PLAYER_HIT,
+    ENEMY_HIT,
+    PLAYER_DESTROYED,
+    ENEMY_DESTROYED,
+
 }
