@@ -6,5 +6,6 @@ public enum EventType {
     ENEMY_HIT,
     PLAYER_DESTROYED,
     ENEMY_DESTROYED,
-
+    PAUSED,
+    RESUME,
 }

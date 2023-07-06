@@ -4,6 +4,7 @@ import java.util.List;
 
 import SpaceEvaders.GameObjects.GameObject;
 import SpaceEvaders.Systems.ServiceLocator.SL;
+import SpaceEvaders.UI.PauseScreen;
 import SpaceEvaders.Systems.InputHandler.*;
 import SpaceEvaders.Systems.EventsSystem.*;
 
@@ -15,6 +16,7 @@ public class GameState extends PlayEventListener implements InputListener  {
     public static boolean paused = false;
     public static boolean running = true;
     public static int score = 0;
+    public PauseScreen pauseScreen;
 
     public static final List<GameObject> gameObjects = new ArrayList<>();
 
@@ -31,6 +33,14 @@ public class GameState extends PlayEventListener implements InputListener  {
     public void onKeyPressed(Input input) {
         if (input == Input.PAUSE) {
             paused = !paused;
+            if (paused)
+            {
+                pauseScreen = new PauseScreen();
+            }
+            else
+            {
+                pauseScreen = null;
+            }
             System.out.println("Paused: " + paused);
         }
     }
