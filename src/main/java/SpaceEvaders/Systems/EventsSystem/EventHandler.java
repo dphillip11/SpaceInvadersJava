@@ -22,6 +22,7 @@ public class EventHandler {
     public void init() {
         //clear listeners
         eventListeners.clear();
+        eventQueue.clear();
     }
 
     public void addListener(EventListener listener) {
