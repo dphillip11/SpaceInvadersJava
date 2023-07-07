@@ -24,6 +24,7 @@ public class GameLoop{
                 double deltaTime = 0;
                 deltaTime = delta / Constants.targetFPS;
                 SL.stateMachine.update(deltaTime);
+                SL.eventHandler.dispatch();
                 delta--;
             }
         }

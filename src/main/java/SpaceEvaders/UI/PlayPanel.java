@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+
+import javax.sound.midi.SysexMessage;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
@@ -32,12 +34,13 @@ public class PlayPanel extends JPanel {
         super.paintComponent(g);
 
         // Calculate the scrolling offset
-        int offsetY = (int) (System.currentTimeMillis() * Constants.backgroundScrollSpeed / 10) % background.getHeight(null);
-
+        float offsetY = m_playState.time * Constants.backgroundScrollSpeed;
+        offsetY = offsetY % (background.getHeight(null));
+ 
         // Draw the scrolled scaled and darkened background image
         Graphics2D g2d = (Graphics2D) g.create();
-        g2d.drawImage(background, 0, -background.getHeight(null) + offsetY, null);
-        g2d.drawImage(background, 0, offsetY, null);
+        g2d.drawImage(background, 0, -background.getHeight(null) + (int)offsetY, null);
+        g2d.drawImage(background, 0, (int)offsetY, null);
         g2d.dispose();
 
         // Draw game objects

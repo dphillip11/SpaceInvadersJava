@@ -21,7 +21,6 @@ public class BooleanToggler {
         running = true;
         durationTimer = duration;
         intervalTimer = interval;
-        System.out.println("started, duration: " + durationTimer + " interval: " + intervalTimer + "");
     }
 
     public void update(double deltaTime) {
@@ -32,7 +31,6 @@ public class BooleanToggler {
         if (intervalTimer <= 0) {
             value = !value;
             intervalTimer = interval;
-            System.out.println("interval passed " + durationTimer );
         }
         if (durationTimer <= 0) {
             running = false;

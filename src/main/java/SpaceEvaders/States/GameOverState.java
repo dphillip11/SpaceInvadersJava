@@ -1,8 +1,16 @@
 package SpaceEvaders.States;
 
 import SpaceEvaders.Systems.StateMachine.IState;
+import SpaceEvaders.UI.GameOverScreen;
+import SpaceEvaders.UI.Window;
+import SpaceEvaders.Systems.ServiceLocator.SL;
+
 
 public class GameOverState implements IState {
+
+    private int score;
+    private GameOverScreen gameOverScreen;
+
 
     @Override
     public State getState()
@@ -12,17 +20,25 @@ public class GameOverState implements IState {
     
     @Override
     public void enter(Object... args) {
-        System.out.println("GameOverState: enter");
+        score = (int) args[0];
+        gameOverScreen = new GameOverScreen(score);
+        SL.window.dispose();
+        SL.init();
+        SL.window = new Window("GameOver");
+        gameOverScreen.attach(SL.window);
     }
 
     @Override
     public void update(double time) {
-        System.out.println("GameOverState: update");
+    
     }
 
     @Override
     public void exit() {
-        System.out.println("GameOverState: exit");
+        gameOverScreen.detach(SL.window);
+        SL.window.dispose();
+        SL.init();
+        SL.window = new Window("GameWindow");
     }
     
 }

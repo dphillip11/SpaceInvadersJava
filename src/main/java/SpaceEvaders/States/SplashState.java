@@ -25,7 +25,7 @@ public class SplashState implements IState{
 
     @Override
     public void update(double time) {
-
+        
     }
 
     @Override

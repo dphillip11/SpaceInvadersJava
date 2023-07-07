@@ -13,30 +13,32 @@ import java.io.InputStream;
 import SpaceEvaders.Systems.ServiceLocator.SL;
 import SpaceEvaders.States.PlayState;
 
-public class StartScreen extends JPanel {
+public class GameOverScreen extends JPanel {
 
     JLabel titleLabel1;
     JLabel titleLabel2;
+    JLabel scoreLabel;
     JButton startButton;
     JButton exitButton;
     JPanel buttonPanel;
+    private int score;
 
-    public StartScreen() {
+    public GameOverScreen(int score) {
+        this.score = score;
         // Create and customize the components
-        titleLabel1 = new JLabel("Space");
+        titleLabel1 = new JLabel("Game");
         titleLabel1.setFont(getCustomFont(100f));
         titleLabel1.setForeground(Color.WHITE);
-        titleLabel2 = new JLabel("Evaders");
+        titleLabel2 = new JLabel("Over");
         titleLabel2.setFont(getCustomFont(100f));
         titleLabel2.setForeground(Color.WHITE);
 
-        JPanel titlePanel = new JPanel();
-        titlePanel.setOpaque(false);
-        titlePanel.setLayout(new GridLayout(2, 1));
-        titlePanel.add(titleLabel1);
-        titlePanel.add(titleLabel2);
+        scoreLabel = new JLabel("Score: " + score);
+        scoreLabel.setFont(getCustomFont(40f));
+        scoreLabel.setForeground(Color.WHITE);
+        scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        startButton = new JButton("Start");
+        startButton = new JButton("Retry");
         startButton.setFont(getCustomFont(16f));
         startButton.setPreferredSize(new Dimension(200, 80));
         startButton.addActionListener(new ActionListener() {
@@ -65,7 +67,8 @@ public class StartScreen extends JPanel {
     }
 
     public void attach(Window frame) {
-         JPanel titlePanel = new JPanel();
+        // Create a panel to hold the title labels
+        JPanel titlePanel = new JPanel();
         titlePanel.setOpaque(false);
         titlePanel.setLayout(new GridLayout(2, 1));
         titlePanel.add(titleLabel1);
@@ -75,6 +78,7 @@ public class StartScreen extends JPanel {
         frame.setLayout(new BorderLayout());
         frame.getContentPane().setBackground(Color.BLACK);
         frame.add(titlePanel, BorderLayout.NORTH);
+        frame.add(scoreLabel, BorderLayout.CENTER);
         frame.add(buttonPanel, BorderLayout.SOUTH);
         frame.setVisible(true);
     }
@@ -83,6 +87,7 @@ public class StartScreen extends JPanel {
         // Remove the components from the frame
         frame.remove(titleLabel1);
         frame.remove(titleLabel2);
+        frame.remove(scoreLabel);
         frame.remove(buttonPanel);
     }
 
@@ -97,3 +102,4 @@ public class StartScreen extends JPanel {
         }
     }
 }
+

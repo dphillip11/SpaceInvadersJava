@@ -77,6 +77,7 @@ public class PlayState implements IState, InputListener, EventListener {
         playPanel.repaint();
         // Repeat input for pressed keys
         SL.inputHandler.fireHeldArrowKeys();
+
     }
 
     @Override
@@ -97,6 +98,9 @@ public class PlayState implements IState, InputListener, EventListener {
     public void onEvent(EventType event, Object... data) {
         if (event == EventType.ENEMY_HIT)
             score += 100;
+        if (event == EventType.PLAYER_DESTROYED) {
+            SL.stateMachine.changeState(new GameOverState(), score);
+        }
     }
 
     @Override
