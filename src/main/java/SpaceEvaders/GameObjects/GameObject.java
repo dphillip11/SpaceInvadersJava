@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 
 import SpaceEvaders.Utilities.Vector2;
+import SpaceEvaders.Utilities.BooleanToggler;
 
 
 public abstract class GameObject {
@@ -12,6 +13,20 @@ public abstract class GameObject {
     protected Vector2 velocity = new Vector2(0, 0);
     protected Vector2 radius = new Vector2(1, 1);
     protected boolean isActive = true;
+
+    protected BooleanToggler flashToggler = new BooleanToggler(false, 0.1, 0.5);
+
+    public void startFlashing() {
+        flashToggler.start();
+    }
+
+    public boolean isFlashing() {
+        return flashToggler.getValue();
+    }
+
+    public void updateToggler(double deltaTime) {
+        flashToggler.update(deltaTime);
+    }
     
     public Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/enemy1.png"));
   

@@ -4,9 +4,6 @@ import SpaceEvaders.CommonState.Constants;
 import SpaceEvaders.GameObjects.CollidableObject;
 import SpaceEvaders.GameObjects.GameObject;
 import java.util.List;
-
-import org.yaml.snakeyaml.scanner.Constant;
-
 import SpaceEvaders.Utilities.Vector2;
 import SpaceEvaders.GameObjects.ObjectType;
 
@@ -15,6 +12,7 @@ public class Physics {
         for (GameObject gameObject : gameObjects) {
             gameObject.setPosition(gameObject.getPosition().add(gameObject.getVelocity().multiply((float) deltaTime)));
             checkBoundaries((CollidableObject) gameObject);
+            gameObject.updateToggler(deltaTime );
         }
     }
 

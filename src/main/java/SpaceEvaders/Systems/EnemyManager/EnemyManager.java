@@ -14,10 +14,10 @@ import SpaceEvaders.Utilities.Vector2;
 
 
 public class EnemyManager {
-    static public void SpawnRow(List<GameObject> gameObjects, int screen_width, int cellSize, float speed) {
+
+    static public void SpawnRow(List<GameObject> gameObjects, int screen_width) {
         //set random x speed
-        float x_velocity = (float) (Math.random() * 4 * speed - speed * 2);
-        int max_possible = screen_width / cellSize;
+        int max_possible = screen_width / Variables.cellSize;
         int num_enemies = Math.max(1, (int) (Math.random() * max_possible));
         //calculate spacing between enemies
         int spacing = screen_width / num_enemies;
@@ -28,27 +28,29 @@ public class EnemyManager {
             gameObjects.add(new EnemyShip());
             //set enemy velocity
             gameObjects.get(gameObjects.size() - 1)
-                    .setPosition(new Vector2(start + i * spacing, -Variables.enemySize.y * 2));
-            if (Math.random() < 0.03)
+                    .setPosition(new Vector2(start + i * spacing, Variables.spawnPosY));
+            if (Math.random() < Variables.incidenceVariant1)
             {
                 EnemyShip enemyShip = (EnemyShip)gameObjects.get(gameObjects.size() - 1);
                 enemyShip.variant = 1;
-                enemyShip.setRadius(enemyShip.getRadius().multiply(2));
-                enemyShip.setVelocity(new Vector2(x_velocity, speed * 0.75f));
+                enemyShip.setRadius(Variables.enemySizeVariant1);
+                enemyShip.setVelocity(new Vector2(0, Variables.enemySpeedVariant1));
+                enemyShip.setHealth(Variables.enemyHealthVariant1);
             }
             else if (i % 2 == 0)
             {
-                gameObjects.get(gameObjects.size() - 1).setVelocity(new Vector2(x_velocity, speed));
+                //faster group
+                gameObjects.get(gameObjects.size() - 1).setVelocity(new Vector2(0, Variables.enemySpeedVariant0 * 2));
             } 
             else
             {
-                gameObjects.get(gameObjects.size() - 1).setVelocity(new Vector2(x_velocity, speed * 1.5f));
+                gameObjects.get(gameObjects.size() - 1).setVelocity(new Vector2(0, Variables.enemySpeedVariant0));
             }
             
         }
     }
     
-   static public void UpdateEnemyVelocities(List<GameObject> gameObjects) {
+   static public void UpdateEnemyVelocities(List<GameObject> gameObjects, Vector2 player_position) {
     // Create a map to store the lists of ships in each row
     Map<Integer, List<Spaceship>> rowShipMap = new HashMap<>();
 
@@ -57,8 +59,7 @@ public class EnemyManager {
         // Check if the object is an EnemyShip
         if (gameObject instanceof Spaceship) {
             Spaceship enemyShip = (Spaceship) gameObject;
-            int rowY = (int)(enemyShip.getPosition().y / 300);
-
+            int rowY = (int)enemyShip.getPosition().y / Variables.evasionRange;
             // Get or create the list of ships for the current row
             List<Spaceship> shipList = rowShipMap.getOrDefault(rowY, new ArrayList<>());
 
@@ -75,30 +76,53 @@ public class EnemyManager {
 
         // Calculate the average spacing between ships
         int numShips = shipList.size();
-        int totalSpacing = (int) Constants.screenWidth - (numShips * (int) Variables.enemySize.x);
-        int averageSpacing = totalSpacing / (numShips + 1);
-
-        // Update the x velocity of ships in the current row
-        float currentX = averageSpacing;
+        //calculate total width of ships in row
+        int totalWidth = 0;
         for (Spaceship enemyShip : shipList) {
-            // Calculate the target x position for the ship in the current row
-            float targetX = currentX + Variables.enemySize.x;
+            totalWidth += enemyShip.getRadius().x * 2;
+        }
+        int totalSpacing = (int) Constants.screenWidth - totalWidth;
+        int averageSpacing = totalSpacing / (numShips + 1);
+        totalWidth = 0;
 
-            // Calculate the new x velocity based on the target x position
-            Vector2 newVelocity = new Vector2(enemyShip.getVelocity().x, enemyShip.getVelocity().y);
-            if (targetX > enemyShip.getPosition().x + 5) {
-                newVelocity.x = Variables.enemySpeed;
-            } else if (targetX < enemyShip.getPosition().x - 5) {
-                newVelocity.x = -Variables.enemySpeed;
-            }
-            else {
-                newVelocity.x = 0;
-            }
-            if (enemyShip instanceof EnemyShip) {
-                 enemyShip.setVelocity(newVelocity);
+        for (int i = 0; i < numShips; i++) {
+            Spaceship spaceShip = shipList.get(i);
+            if (spaceShip instanceof EnemyShip) {
+                EnemyShip enemyShip = (EnemyShip) spaceShip;              
+                // Calculate the target x position for the ship in the current row
+                float targetX = (i + 1) * averageSpacing + totalWidth + enemyShip.getRadius().x;
+                totalWidth += enemyShip.getRadius().x * 2;
+            
+                if (enemyShip.variant == 1)
+                {
+                    float lowerX = i > 0 ? shipList.get(i - 1).getMaxPos().x : 0;
+                    float upperX = i < numShips - 1 ? shipList.get(i + 1).getMinPos().x : Constants.screenWidth;
+                    targetX = (lowerX + upperX) / 2;
+                    if (Math.abs(targetX - player_position.x) < 50 && Math.random() < Variables.shootRateVariant1) {
+                        enemyShip.shoot(Variables.enemyBulletSpeedVariant1, Variables.enemyBulletRadiusVariant1, false);
+                    }
+                }
+                else
+                {
+                    if (Math.abs(enemyShip.getPosition().x - player_position.x) < 50 && enemyShip.getPosition().y < player_position.y && Math.random() < Variables.shootRateVariant0) {
+                        enemyShip.shoot(Variables.enemyBulletSpeedVariant0, Variables.enemyBulletRadiusVariant1, false);
+                    }
+                }
+            
+                // Calculate the new x velocity based on the target x position
+                Vector2 newVelocity = new Vector2(0, enemyShip.getVelocity().y);
+                if (targetX > enemyShip.getPosition().x + 5) {
+                    newVelocity.x = enemyShip.getVelocity().y;
+                } else if (targetX < enemyShip.getPosition().x - 5) {
+                    newVelocity.x = -enemyShip.getVelocity().y;
+                }
+                else {
+                    newVelocity.x = 0;
+                }
+                
+                enemyShip.setVelocity(newVelocity);
             }
 
-            currentX += Variables.enemySize.x + averageSpacing;
         }
     }
 }

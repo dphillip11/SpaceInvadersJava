@@ -17,8 +17,8 @@ public class SplashState implements IState{
     
     @Override
     public void enter(Object... args) {
-        System.out.println("SplashState: enter");
         SL.window.dispose();
+        SL.init();
         SL.window = new Window("SplashWindow");
         startScreen.attach(SL.window);
     }
@@ -30,9 +30,9 @@ public class SplashState implements IState{
 
     @Override
     public void exit() {
-        System.out.println("SplashState: exit");
         startScreen.detach(SL.window);
         SL.window.dispose();
+        SL.init();
         SL.window = new Window("GameWindow");
     }
     

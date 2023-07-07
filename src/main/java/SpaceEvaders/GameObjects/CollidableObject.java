@@ -58,6 +58,7 @@ public abstract class CollidableObject extends GameObject {
             SL.eventHandler.notify(EventType.ENEMY_HIT);
         }
         hasCollided = true;
+        startFlashing();
     }
 
     public void applyCollision() {

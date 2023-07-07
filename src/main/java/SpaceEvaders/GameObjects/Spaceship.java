@@ -12,10 +12,20 @@ public class Spaceship extends CollidableObject {
         SL.eventHandler.notify(EventType.ENEMY_DESTROYED);
     }
 
-    public void shoot(Vector2 speed, Vector2 pos, Vector2 rad, boolean isFriendly) {
+    public void shoot(float speed, Vector2 bullet_size, boolean isFriendly) {
         if (isActive())
         {
-            SL.eventHandler.notify(EventType.SHOOT, speed, pos, rad, isFriendly);
+            Vector2 vel = new Vector2(0, speed);
+            Vector2 origin = new Vector2(position.x, position.y);
+            float offset = radius.y + bullet_size.y;
+            if (isFriendly) {
+                vel.y = -vel.y;
+                origin.subtractFromThis(0, offset);
+            }
+            else {
+                origin.addToThis(0, offset);
+            }
+            SL.eventHandler.notify(EventType.SHOOT, vel, origin, bullet_size, isFriendly);
         }
     }
 }

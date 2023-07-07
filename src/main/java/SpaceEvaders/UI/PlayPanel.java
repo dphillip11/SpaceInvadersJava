@@ -3,37 +3,54 @@ package SpaceEvaders.UI;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.util.List;
-
+import java.awt.Graphics2D;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+
 import SpaceEvaders.CommonState.Constants;
 import SpaceEvaders.Systems.RenderingSystem.ObjectRenderer;
-import SpaceEvaders.GameObjects.GameObject;
 import SpaceEvaders.States.PlayState;
-
-
-
+//import image utils
+import SpaceEvaders.Utilities.ImageUtils;
 
 public class PlayPanel extends JPanel {
 
-    private PlayState.Score score;
-    private List<GameObject> gameObjects;
+    private PlayState m_playState;
+    private Image background;
 
-    public PlayPanel(List<GameObject> gameObjects, PlayState.Score score) {
-        this.gameObjects = gameObjects;
-        this.score = score;
+    public PlayPanel(PlayState playState) {
+        m_playState = playState;
+        background = new ImageIcon("X:/SpaceInvadersJava/src/main/resources/images/space.jpg").getImage();
+        float scale = (float) Constants.screenWidth / background.getWidth(null);
+        background = ImageUtils.scaleImage(background, Constants.screenWidth, (int)(background.getHeight(null) * scale));
+        background = ImageUtils.darkenImage(background, 0.3f);
     }
 
-        @Override
-        public void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, Constants.screenWidth, Constants.screenHeight);
-            ObjectRenderer.render(g, gameObjects);
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
-            // Display the score in the top left of the gamePanel
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.BOLD, 16));
-            g.drawString("Score: " + score.value, 10, 20);
-        }
-    };
+        // Calculate the scrolling offset
+        int offsetY = (int) (System.currentTimeMillis() * Constants.backgroundScrollSpeed / 10) % background.getHeight(null);
+
+        // Draw the scrolled scaled and darkened background image
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.drawImage(background, 0, -background.getHeight(null) + offsetY, null);
+        g2d.drawImage(background, 0, offsetY, null);
+        g2d.dispose();
+
+        // Draw game objects
+        ObjectRenderer.render(g, m_playState.gameObjects);
+
+        // Display the score in the top left of the gamePanel
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 16));
+        g.drawString("Score: " + m_playState.score, 10, 20);
+
+        // Repaint the panel
+        repaint();
+    }
+
+    
+}

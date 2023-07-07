@@ -7,7 +7,7 @@ public class EnemyShip extends Spaceship {
     public int variant = 0;
 
     public EnemyShip() {
-        radius = Variables.enemySize;
+        radius = Variables.enemySizeVariant0;
         type = ObjectType.ENEMY;
     }
 }
