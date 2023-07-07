@@ -1,11 +1,13 @@
 package SpaceEvaders.States;
 
-import SpaceEvaders.Systems.InputHandler.InputListener;
 import SpaceEvaders.Systems.ServiceLocator.SL;
 import SpaceEvaders.Systems.StateMachine.IState;
-import SpaceEvaders.Systems.InputHandler.Input;
+import SpaceEvaders.UI.StartScreen;
+import SpaceEvaders.UI.Window;
 
-public class SplashState implements IState, InputListener {
+public class SplashState implements IState{
+
+    private StartScreen startScreen = new StartScreen();
 
     @Override
     public State getState()
@@ -16,25 +18,22 @@ public class SplashState implements IState, InputListener {
     @Override
     public void enter(Object... args) {
         System.out.println("SplashState: enter");
-        SL.inputHandler.addListener(this);
+        SL.window.dispose();
+        SL.window = new Window("SplashWindow");
+        startScreen.attach(SL.window);
     }
 
     @Override
     public void update(double time) {
+
     }
 
     @Override
     public void exit() {
         System.out.println("SplashState: exit");
-    }
-
-    @Override
-    public void onKeyPressed(Input input) {
-        System.out.println("SplashState: onKeyPressed");
-        if (input == Input.SPACE)
-        {
-            SL.stateMachine.changeState(new PlayState());
-        }
+        startScreen.detach(SL.window);
+        SL.window.dispose();
+        SL.window = new Window("GameWindow");
     }
     
 }

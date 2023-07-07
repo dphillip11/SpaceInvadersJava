@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 
 public class InputHandler implements KeyListener {
     private boolean[] keys = new boolean[256];
@@ -16,6 +17,10 @@ public class InputHandler implements KeyListener {
             listeners.clear();
         }
         Arrays.fill(keys, false);
+    }
+
+    public void setSwingKeyListener(JFrame frame) {
+        frame.addKeyListener(this);
     }
 
     public void addListener(InputListener listener) {
@@ -36,6 +41,7 @@ public class InputHandler implements KeyListener {
     }
 
     public void keyPressed(KeyEvent e) {
+        System.out.println("InputHandler: keyPressed");
         int keyCode = e.getKeyCode();
         if (keyCode >= 0 && keyCode < keys.length) {
             synchronized (keys) {

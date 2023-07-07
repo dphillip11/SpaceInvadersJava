@@ -10,25 +10,33 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class StartScreen {
+import SpaceEvaders.Systems.ServiceLocator.SL;
+import SpaceEvaders.States.PlayState;
+
+public class StartScreen extends JPanel {
+
+    JLabel titleLabel1;
+    JLabel titleLabel2;
+    JButton startButton;
+    JButton exitButton;
+    JPanel buttonPanel;
 
     public StartScreen() {
-        Window frame = new Window("Space Evaders, Splash Screen");
         // Create and customize the components
-        JLabel titleLabel1 = new JLabel("Space");
+        titleLabel1 = new JLabel("Space");
         titleLabel1.setFont(getCustomFont(100f));
         titleLabel1.setForeground(Color.WHITE);
-        JLabel titleLabel2 = new JLabel("Evaders");
+        titleLabel2 = new JLabel("Evaders");
         titleLabel2.setFont(getCustomFont(100f));
         titleLabel2.setForeground(Color.WHITE);
 
-        JButton startButton = new JButton("Start");
+        startButton = new JButton("Start");
         startButton.setFont(getCustomFont(16f));
         startButton.setPreferredSize(new Dimension(200, 80));
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Application.startGame();
+               SL.stateMachine.changeState(new PlayState());
             }
         });
 
@@ -38,25 +46,33 @@ public class StartScreen {
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                Application.exit();
             }
         });
 
         // Create a separate panel for the buttons
-        JPanel buttonPanel = new JPanel();
+        buttonPanel = new JPanel();
         buttonPanel.setOpaque(false);
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(startButton);
         buttonPanel.add(exitButton);
+    }
 
+    public void attach(Window frame) {
         // Add the components to the frame
         frame.setLayout(new BorderLayout());
         frame.getContentPane().setBackground(Color.BLACK);
         frame.add(titleLabel1, BorderLayout.NORTH);
         frame.add(titleLabel2, BorderLayout.CENTER);
         frame.add(buttonPanel, BorderLayout.SOUTH);
-
         frame.setVisible(true);
+    }
+
+    public void detach(Window frame) {
+        // Remove the components from the frame
+        frame.remove(titleLabel1);
+        frame.remove(titleLabel2);
+        frame.remove(buttonPanel);
     }
 
     private Font getCustomFont(float size) {

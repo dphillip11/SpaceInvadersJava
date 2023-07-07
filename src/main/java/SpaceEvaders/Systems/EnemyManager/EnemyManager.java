@@ -4,15 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Collections;
 
 import SpaceEvaders.CommonState.Constants;
 import SpaceEvaders.CommonState.Variables;
 import SpaceEvaders.GameObjects.EnemyShip;
 import SpaceEvaders.GameObjects.Spaceship;
 import SpaceEvaders.GameObjects.GameObject;
-import SpaceEvaders.GameObjects.PlayerShip;
 import SpaceEvaders.Utilities.Vector2;
 
 
@@ -30,8 +27,16 @@ public class EnemyManager {
         for (int i = 0; i < num_enemies; i++) {
             gameObjects.add(new EnemyShip());
             //set enemy velocity
-            gameObjects.get(gameObjects.size() - 1).setPosition(new Vector2(start + i * spacing, 100));
-            if (i % 2 == 0)
+            gameObjects.get(gameObjects.size() - 1)
+                    .setPosition(new Vector2(start + i * spacing, -Variables.enemySize.y * 2));
+            if (Math.random() < 0.03)
+            {
+                EnemyShip enemyShip = (EnemyShip)gameObjects.get(gameObjects.size() - 1);
+                enemyShip.variant = 1;
+                enemyShip.setRadius(enemyShip.getRadius().multiply(2));
+                enemyShip.setVelocity(new Vector2(x_velocity, speed * 0.75f));
+            }
+            else if (i % 2 == 0)
             {
                 gameObjects.get(gameObjects.size() - 1).setVelocity(new Vector2(x_velocity, speed));
             } 
@@ -39,6 +44,7 @@ public class EnemyManager {
             {
                 gameObjects.get(gameObjects.size() - 1).setVelocity(new Vector2(x_velocity, speed * 1.5f));
             }
+            
         }
     }
     
@@ -81,9 +87,9 @@ public class EnemyManager {
             // Calculate the new x velocity based on the target x position
             Vector2 newVelocity = new Vector2(enemyShip.getVelocity().x, enemyShip.getVelocity().y);
             if (targetX > enemyShip.getPosition().x + 5) {
-                newVelocity.x = Variables.enemySpeed * ((float)Math.random() + 0.5f);
+                newVelocity.x = Variables.enemySpeed;
             } else if (targetX < enemyShip.getPosition().x - 5) {
-                newVelocity.x = -Variables.enemySpeed * ((float)Math.random() + 0.5f);
+                newVelocity.x = -Variables.enemySpeed;
             }
             else {
                 newVelocity.x = 0;

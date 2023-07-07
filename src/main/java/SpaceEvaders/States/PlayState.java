@@ -1,9 +1,7 @@
 package SpaceEvaders.States;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -46,13 +44,18 @@ public class PlayState implements IState, InputListener {
     private float time = 0;
     private float spawnTimer = 0;
     private int score = 0;
+    // Window gameWindow = new Window("Game Window");
 
     private PlayerShip player = new PlayerShip();
 
     public void onKeyPressed(Input input) {
+        System.out.println("PlayState: onKeyPressed");
         if (input == Input.PAUSE) {
             SL.stateMachine.changeState(new PauseState(), this);
             SL.eventHandler.notify(EventType.PAUSED);
+        }
+        if (input == Input.ESCAPE) {
+            SL.stateMachine.changeState(new SplashState(), this);
         }
     }
 
@@ -91,7 +94,6 @@ public class PlayState implements IState, InputListener {
 
         // Render to the buffer
         gamePanel.repaint();
-
         // Repeat input for pressed keys
         SL.inputHandler.fireHeldArrowKeys();
     }
