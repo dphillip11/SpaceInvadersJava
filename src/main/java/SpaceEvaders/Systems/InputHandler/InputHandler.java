@@ -41,7 +41,6 @@ public class InputHandler implements KeyListener {
     }
 
     public void keyPressed(KeyEvent e) {
-        System.out.println("InputHandler: keyPressed");
         int keyCode = e.getKeyCode();
         if (keyCode >= 0 && keyCode < keys.length) {
             synchronized (keys) {

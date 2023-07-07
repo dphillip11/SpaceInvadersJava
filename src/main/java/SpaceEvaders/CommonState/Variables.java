@@ -18,5 +18,5 @@ public class Variables {
     public static float playerBulletSpeed = 500;
     public static Vector2 playerBulletRadius = new Vector2(2, 20);
     
-    public static float SFX_volume = 0.00f;
+    public static float SFX_volume = 0.05f;
 }

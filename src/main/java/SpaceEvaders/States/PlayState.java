@@ -2,12 +2,13 @@ package SpaceEvaders.States;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Font;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.JPanel;
+
 
 import SpaceEvaders.GameObjects.GameObject;
 import SpaceEvaders.GameObjects.CollidableObject;
@@ -15,6 +16,7 @@ import SpaceEvaders.Systems.StateMachine.IState;
 import SpaceEvaders.Systems.InputHandler.Input;
 import SpaceEvaders.Systems.InputHandler.InputListener;
 import SpaceEvaders.Systems.EventsSystem.EventType;
+import SpaceEvaders.Systems.EventsSystem.EventListener;
 import SpaceEvaders.Systems.CollisionSystem.CollisionManager;
 import SpaceEvaders.Systems.ServiceLocator.SL;
 import SpaceEvaders.CommonState.Constants;
@@ -22,20 +24,11 @@ import SpaceEvaders.Systems.BulletManager.BulletManager;
 import SpaceEvaders.GameObjects.PlayerShip;
 import SpaceEvaders.Systems.PhysicsManager.Physics;
 import SpaceEvaders.Systems.EnemyManager.EnemyManager;
-import SpaceEvaders.Systems.RenderingSystem.ObjectRenderer;
+import SpaceEvaders.UI.PlayPanel;
 
 
-public class PlayState implements IState, InputListener {
 
-    public JPanel gamePanel = new JPanel(true) {
-        @Override
-        public void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, Constants.screenWidth, Constants.screenHeight);
-            ObjectRenderer.render(g, gameObjects);
-        }
-    };
+public class PlayState implements IState, InputListener, EventListener {
 
     private List<GameObject> gameObjects = new ArrayList<>();
     private BulletManager bulletManager = new BulletManager(gameObjects);
@@ -43,13 +36,16 @@ public class PlayState implements IState, InputListener {
 
     private float time = 0;
     private float spawnTimer = 0;
-    private int score = 0;
+    public class Score{
+        public int value = 0;}
+    private Score score = new Score();
+
+    private PlayPanel playPanel = new PlayPanel(gameObjects, score);
     // Window gameWindow = new Window("Game Window");
 
     private PlayerShip player = new PlayerShip();
 
     public void onKeyPressed(Input input) {
-        System.out.println("PlayState: onKeyPressed");
         if (input == Input.PAUSE) {
             SL.stateMachine.changeState(new PauseState(), this);
             SL.eventHandler.notify(EventType.PAUSED);
@@ -57,6 +53,13 @@ public class PlayState implements IState, InputListener {
         if (input == Input.ESCAPE) {
             SL.stateMachine.changeState(new SplashState(), this);
         }
+    }
+
+    public void onEvent(EventType event, Object... data) {
+        System.out.println("PlayState: onEvent");
+        if (event == EventType.ENEMY_HIT)
+            score.value += 100;
+        System.out.println(score);
     }
 
     @Override
@@ -69,12 +72,13 @@ public class PlayState implements IState, InputListener {
         SL.inputHandler.init();
         SL.inputHandler.addListener(this);
         SL.inputHandler.addListener(player);
+        SL.eventHandler.addListener(this);
 
         if (args.length == 0) {
             gameObjects.add(player);
-            gamePanel.setSize(Constants.screenWidth, Constants.screenHeight);
-            gamePanel.setVisible(true);
-            SL.window.add(gamePanel);
+            playPanel.setSize(Constants.screenWidth, Constants.screenHeight);
+            playPanel.setVisible(true);
+            SL.window.add(playPanel);
             SL.eventHandler.addListener(bulletManager);
         }
     }
@@ -93,7 +97,7 @@ public class PlayState implements IState, InputListener {
         }
 
         // Render to the buffer
-        gamePanel.repaint();
+        playPanel.repaint();
         // Repeat input for pressed keys
         SL.inputHandler.fireHeldArrowKeys();
     }
