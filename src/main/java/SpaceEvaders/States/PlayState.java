@@ -6,11 +6,6 @@ import org.yaml.snakeyaml.tokens.ValueToken;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Timer;
-import java.util.TimerTask;
-
-
-
 
 import SpaceEvaders.GameObjects.GameObject;
 import SpaceEvaders.GameObjects.HealthPowerup;
@@ -45,6 +40,8 @@ public class PlayState implements IState, InputListener, EventListener {
     public int score = 0;
     public float difficulty = 1;
     public Boolean bulletPoweredUp = false;
+    public float bulletPowerupTimer = 0;
+
 
     private PlayPanel playPanel = new PlayPanel(this);
     public PlayerShip player = new PlayerShip();
@@ -90,6 +87,10 @@ public class PlayState implements IState, InputListener, EventListener {
         // Repeat input for pressed keys
         SL.inputHandler.fireHeldArrowKeys();
         if (bulletPoweredUp) {
+            bulletPowerupTimer -= deltaTime;
+            if (bulletPowerupTimer <= 0) {
+                bulletPoweredUp = false;
+            }
             SL.inputHandler.fireHeldSpace();
         }
 
@@ -110,10 +111,6 @@ public class PlayState implements IState, InputListener, EventListener {
         }
     }
     
-     private void broadcastBulletPowerupExpired() {
-         SL.eventHandler.notify(EventType.BULLET_POWERUP_EXPIRED);
-    }
-
     public void onEvent(EventType event, Object... data) {
         if (event == EventType.ENEMY_HIT)
             score += 100;
@@ -132,24 +129,11 @@ public class PlayState implements IState, InputListener, EventListener {
             assert (data.length == 2);
             gameObjects.add(new BulletPowerup((Vector2) data[0], (int) data[1]));
         }
-        if (event == EventType.BULLET_POWERUP_COLLECTED) {
+         if (event == EventType.BULLET_POWERUP_COLLECTED) {
             assert (data.length == 1);
             bulletPoweredUp = true;
-
-            Timer timer = new Timer();
-            TimerTask task = new TimerTask() {
-                @Override
-                public void run() {
-                    broadcastBulletPowerupExpired();
-                }
-            };
-            long bulletPowerupDurationMillis = (long) (Variables.bulletPowerupDuration * 1000); // Convert to milliseconds
-            timer.schedule(task, bulletPowerupDurationMillis);
+            bulletPowerupTimer = (float) ((int)data[0]);
         }
-        if(event == EventType.BULLET_POWERUP_EXPIRED) {
-            bulletPoweredUp = false;
-        }
-
     }
     
 
