@@ -3,7 +3,6 @@ package SpaceEvaders.States;
 import SpaceEvaders.Systems.ServiceLocator.SL;
 import SpaceEvaders.Systems.StateMachine.IState;
 import SpaceEvaders.UI.StartScreen;
-import SpaceEvaders.UI.Window;
 
 public class SplashState implements IState{
 
@@ -17,9 +16,7 @@ public class SplashState implements IState{
     
     @Override
     public void enter(Object... args) {
-        SL.window.dispose();
-        SL.init();
-        SL.window = new Window("SplashWindow");
+        SL.changeWindow("Splash");
         startScreen.attach(SL.window);
     }
 
@@ -30,10 +27,7 @@ public class SplashState implements IState{
 
     @Override
     public void exit() {
-        startScreen.detach(SL.window);
-        SL.window.dispose();
-        SL.init();
-        SL.window = new Window("GameWindow");
+        SL.changeWindow("gameWindow");
     }
     
 }

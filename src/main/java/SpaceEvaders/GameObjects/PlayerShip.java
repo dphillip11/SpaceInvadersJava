@@ -14,10 +14,12 @@ public class PlayerShip extends Spaceship implements InputListener {
     public PlayerShip()
     {
         image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/spaceship.png"));
+        flashImage = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/spaceship-red.png"));
         radius = Variables.playerSize;
         type = ObjectType.PLAYER;
         SL.inputHandler.addListener(this);
         setHealth(Variables.maxPlayerHealth);
+        setMaxHealth(Variables.maxPlayerHealth);
     }
 
     @Override
@@ -35,8 +37,18 @@ public class PlayerShip extends Spaceship implements InputListener {
     public void setPosition(float x, float y) {
         this.position.x = x;
         this.position.y = y;
-        setVelocity(new Vector2(0,0));
-    } 
+        setVelocity(new Vector2(0, 0));
+    }
+    
+    @Override
+    public void onCollide(ObjectType otherType) {
+        if (otherType == ObjectType.BULLET_ENEMY) {
+            takeDamage(1);
+            startFlashing();
+            setHasCollided(true);
+            SL.eventHandler.notify(EventType.PLAYER_HIT);
+        }
+    }
 
     @Override
     public void onKeyPressed(Input input) {

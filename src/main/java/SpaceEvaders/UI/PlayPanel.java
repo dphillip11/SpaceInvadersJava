@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
-import javax.sound.midi.SysexMessage;
+
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
@@ -20,12 +20,14 @@ public class PlayPanel extends JPanel {
 
     private PlayState m_playState;
     private Image background;
+    public HealthBar healthBar = new HealthBar();
 
     public PlayPanel(PlayState playState) {
         m_playState = playState;
         background = new ImageIcon("X:/SpaceInvadersJava/src/main/resources/images/space.jpg").getImage();
         float scale = (float) Constants.screenWidth / background.getWidth(null);
-        background = ImageUtils.scaleImage(background, Constants.screenWidth, (int)(background.getHeight(null) * scale));
+        background = ImageUtils.scaleImage(background, Constants.screenWidth,
+                (int) (background.getHeight(null) * scale));
         background = ImageUtils.darkenImage(background, 0.3f);
     }
 
@@ -43,6 +45,8 @@ public class PlayPanel extends JPanel {
         g2d.drawImage(background, 0, (int)offsetY, null);
         g2d.dispose();
 
+        // Display the health bar
+        healthBar.draw(g);
         // Draw game objects
         ObjectRenderer.render(g, m_playState.gameObjects);
 
@@ -50,7 +54,6 @@ public class PlayPanel extends JPanel {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 16));
         g.drawString("Score: " + m_playState.score, 10, 20);
-
         // Repaint the panel
         repaint();
     }

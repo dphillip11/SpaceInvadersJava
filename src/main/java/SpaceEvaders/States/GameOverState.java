@@ -4,6 +4,7 @@ import SpaceEvaders.Systems.StateMachine.IState;
 import SpaceEvaders.UI.GameOverScreen;
 import SpaceEvaders.UI.Window;
 import SpaceEvaders.Systems.ServiceLocator.SL;
+import SpaceEvaders.Systems.EventsSystem.EventType;
 
 
 public class GameOverState implements IState {
@@ -26,6 +27,7 @@ public class GameOverState implements IState {
         SL.init();
         SL.window = new Window("GameOver");
         gameOverScreen.attach(SL.window);
+        SL.eventHandler.notify(EventType.STOP);
     }
 
     @Override

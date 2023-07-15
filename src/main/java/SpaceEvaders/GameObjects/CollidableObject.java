@@ -1,73 +1,55 @@
 package SpaceEvaders.GameObjects;
 
-import SpaceEvaders.Systems.EventsSystem.EventType;
-import SpaceEvaders.Systems.ServiceLocator.SL;
-
 public abstract class CollidableObject extends GameObject {
     protected int health = 1;
     protected int maxHealth = 1;
     protected ObjectType type = ObjectType.UNDEFINED;
-    protected boolean hasCollided = false;
+    protected Boolean hasCollided = false;
 
     public abstract void die();
 
-     public int getHealth() {
+    public void resetCollisions() {
+        hasCollided = false;
+    }
+
+    public void setHasCollided(Boolean bool) {
+        this.hasCollided = bool;
+    }
+
+    public Boolean getHasCollided() {
+        return hasCollided;
+    }
+    
+    public int getHealth() {
         return health;
     }
 
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+    
     public ObjectType getType() {
         return type;
     }
 
-    public boolean hasCollided() {
-        return hasCollided;
-    }
-
     public void setHealth(int health) {
         this.health = health;
+        if (health > maxHealth) {
+            maxHealth = health;
+        }
     }
 
     public void setType(ObjectType type) {
         this.type = type;
     }
 
-    public void setHasCollided(boolean hasCollided) {
-        this.hasCollided = hasCollided;
-    }
-    
-    public void Collide(ObjectType otherType) {
-        if (type == otherType) {
-            return;
-        }
-        if (type == ObjectType.BULLET_ENEMY && otherType == ObjectType.ENEMY) {
-            return;
-        }
-        if (type == ObjectType.BULLET_FRIENDLY && otherType == ObjectType.PLAYER) {
-            return;
-        }
-        if (type == ObjectType.PLAYER && otherType == ObjectType.BULLET_FRIENDLY) {
-            return;
-        }
-        if (type == ObjectType.ENEMY && otherType == ObjectType.BULLET_ENEMY) {
-            return;
-        }
-        if (type == ObjectType.PLAYER && otherType == ObjectType.BULLET_ENEMY) {
-            SL.eventHandler.notify(EventType.PLAYER_HIT);
-        }
-        if (type == ObjectType.ENEMY && otherType == ObjectType.BULLET_FRIENDLY) {
-            SL.eventHandler.notify(EventType.ENEMY_HIT);
-        }
-        hasCollided = true;
-        startFlashing();
-    }
+    public abstract void onCollide(ObjectType otherType);
 
-    public void applyCollision() {
-        if (hasCollided) {
-            takeDamage(1);
-        }
-    }
     public void takeDamage(int damage) {
-        hasCollided = false;
         assert damage >= 0;
         health -= damage;
         if (health <= 0) {

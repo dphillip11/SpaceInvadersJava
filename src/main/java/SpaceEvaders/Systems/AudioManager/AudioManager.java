@@ -1,6 +1,7 @@
 package SpaceEvaders.Systems.AudioManager;
 
 import SpaceEvaders.Systems.EventsSystem.PlayEventListener;
+import SpaceEvaders.Systems.ServiceLocator.SL;
 import SpaceEvaders.CommonState.Variables;
 import SpaceEvaders.Systems.EventsSystem.EventType;
 
@@ -26,9 +27,11 @@ public class AudioManager extends PlayEventListener {
             cacheSound(EventType.ENEMY_DESTROYED, "thud.wav");
             cacheSound(EventType.PLAYER_HIT, "hitHurt.wav");
             cacheSound(EventType.PLAYER_DESTROYED, "gameOver.wav");
+            cacheSound(EventType.PLAY, "gameOver.wav");
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
             e.printStackTrace();
         }
+        SL.eventHandler.addListener(this);
     }
 
     private void cacheSound(EventType event, String soundFileName) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
@@ -41,10 +44,16 @@ public class AudioManager extends PlayEventListener {
 
     @Override
     public void onPlayEvent(EventType eventType, Object... args) {
-        String soundFileName = getSoundFileName(eventType);
-        if (soundFileName != null) {
-            playSound(eventType, Variables.SFX_volume);
-        }
+        // if (eventType == EventType.PLAY) {
+        //     playTrack();
+        // } else if (eventType == EventType.STOP) {
+        //     stopTrack();
+        // } else {
+            String soundFileName = getSoundFileName(eventType);
+            if (soundFileName != null) {
+                playSound(eventType, Variables.SFX_volume);
+            }
+        //}
     }
 
     private String getSoundFileName(EventType event) {
@@ -58,6 +67,8 @@ public class AudioManager extends PlayEventListener {
             case PLAYER_HIT:
                 return "hitHurt.wav";
             case PLAYER_DESTROYED:
+                return "gameOver.wav";
+            case PLAY:
                 return "gameOver.wav";
             default:
                 return null;
@@ -85,4 +96,26 @@ public class AudioManager extends PlayEventListener {
     private Clip getSoundClip(EventType event) {
         return soundCache.get(event);
     }
+
+    private void playTrack() {
+    try {
+        Clip clip = getSoundClip(EventType.PLAY);
+        if (clip != null) {
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            clip.start();
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
 }
+
+private void stopTrack() {
+    System.out.println("Stop track");
+    Clip clip = getSoundClip(EventType.PLAY);
+    if (clip != null) {
+        clip.stop();
+        clip.setFramePosition(0);
+    }
+}
+}
+

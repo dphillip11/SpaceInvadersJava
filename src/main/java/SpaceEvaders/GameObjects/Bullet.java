@@ -30,8 +30,30 @@ public class Bullet extends CollidableObject{
         } else {
             type = ObjectType.BULLET_ENEMY;
         }
-        hasCollided = false;
         isActive = true;
+    }
+
+    @Override
+    public void onCollide(ObjectType otherType) {
+        if (type == ObjectType.BULLET_FRIENDLY && otherType == ObjectType.ENEMY) {
+            takeDamage(1);
+            setHasCollided(true);
+        }
+        else if (type == ObjectType.BULLET_ENEMY && otherType == ObjectType.PLAYER) {
+            takeDamage(1);
+            setHasCollided(true);
+        }
+        else if(type == ObjectType.BULLET_FRIENDLY && otherType == ObjectType.BULLET_ENEMY)
+        {
+            takeDamage(1);
+            setHasCollided(true);
+        }
+        else if(type == ObjectType.BULLET_ENEMY && otherType == ObjectType.BULLET_FRIENDLY)
+        {
+            takeDamage(1);
+            setHasCollided(true);
+        }
+
     }
 
 }

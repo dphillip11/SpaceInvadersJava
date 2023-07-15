@@ -78,11 +78,11 @@ public class CollisionManager {
                 for (int objectIndex : cellObjects) {
                     if (objectIndex >= 0 && objectIndex < gameObjects.size()) {
                         CollidableObject object = (CollidableObject) gameObjects.get(objectIndex);
-                        if (object.hasCollided()) {
-                            continue;
-                        }
                         for (ObjectType otherType : cellObjectTypes) {
-                            object.Collide(otherType);
+                            if (!object.getHasCollided())
+                            {
+                                object.onCollide(otherType);
+                            }
                         }
                     }
                 }

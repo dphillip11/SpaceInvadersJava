@@ -5,7 +5,7 @@ public enum ObjectType {
     ENEMY,
     BULLET_FRIENDLY,
     BULLET_ENEMY,
-    POWERUP,
+    HEALTH_POWERUP,
     TEST,
     UNDEFINED
 }

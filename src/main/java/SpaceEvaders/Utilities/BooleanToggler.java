@@ -9,12 +9,21 @@ public class BooleanToggler {
     private double intervalTimer;
     private double duration;
     private double durationTimer;
+    private boolean infinite = false;
 
 
     public BooleanToggler(boolean _defaultValue, double _interval, double _duration) {
         defaultValue = _defaultValue;
         interval = _interval;
         duration = _duration;
+    }
+
+    public BooleanToggler(boolean _defaultValue, double _interval, double _duration, boolean _infinite) {
+        defaultValue = _defaultValue;
+        interval = _interval;
+        duration = _duration;
+        infinite = _infinite;
+        running = _infinite;
     }
 
     public void start() {
@@ -26,7 +35,8 @@ public class BooleanToggler {
     public void update(double deltaTime) {
         if (!running)
             return;
-        durationTimer -= deltaTime;
+        if(!infinite)
+            durationTimer -= deltaTime;
         intervalTimer -= deltaTime;
         if (intervalTimer <= 0) {
             value = !value;

@@ -7,6 +7,7 @@ import java.util.Iterator;
 
 
 import SpaceEvaders.GameObjects.GameObject;
+import SpaceEvaders.GameObjects.HealthPowerup;
 import SpaceEvaders.GameObjects.CollidableObject;
 import SpaceEvaders.Systems.StateMachine.IState;
 import SpaceEvaders.Systems.InputHandler.Input;
@@ -22,6 +23,7 @@ import SpaceEvaders.GameObjects.PlayerShip;
 import SpaceEvaders.Systems.PhysicsManager.Physics;
 import SpaceEvaders.Systems.EnemyManager.EnemyManager;
 import SpaceEvaders.UI.PlayPanel;
+import SpaceEvaders.Utilities.Vector2;
 
 
 
@@ -37,8 +39,7 @@ public class PlayState implements IState, InputListener, EventListener {
     public float difficulty = 1;
 
     private PlayPanel playPanel = new PlayPanel(this);
-
-    private PlayerShip player = new PlayerShip();
+    public PlayerShip player = new PlayerShip();
 
 
     @Override
@@ -56,10 +57,13 @@ public class PlayState implements IState, InputListener, EventListener {
             SL.window.add(playPanel);
             SL.eventHandler.addListener(bulletManager);
         }
+
+        SL.eventHandler.notify(EventType.PLAY);
     }
 
     @Override
     public void update(double deltaTime) {
+        playPanel.healthBar.setHealth(player.getHealth(), player.getMaxHealth());
         time += deltaTime;
         difficulty = 1 + (time / 10);
         UpdateDifficulty();
@@ -101,6 +105,17 @@ public class PlayState implements IState, InputListener, EventListener {
         if (event == EventType.PLAYER_DESTROYED) {
             SL.stateMachine.changeState(new GameOverState(), score);
         }
+        if (event == EventType.PLAYER_REPLENISH_HEALTH) {
+            assert (data.length == 1);
+            player.replenishHealth((int) data[0]);
+        }
+        if (event == EventType.SPAWN_HEALTH_POWERUP) {
+            assert (data.length == 2);
+            System.out.println(((Vector2) data[0]).x);
+            System.out.println(((Vector2) data[0]).y);
+            System.out.println((int)data[1]);
+            gameObjects.add(new HealthPowerup((Vector2) data[0], (int)data[1]));
+        }
     }
 
     @Override
@@ -113,7 +128,7 @@ public class PlayState implements IState, InputListener, EventListener {
         Iterator<GameObject> iterator = gameObjects.iterator();
         while (iterator.hasNext()) {
             GameObject gameObject = iterator.next();
-            ((CollidableObject) gameObject).applyCollision();
+            ((CollidableObject) gameObject).resetCollisions();
             if (!gameObject.isActive()) {
                 iterator.remove(); // Use the iterator's remove method
             }

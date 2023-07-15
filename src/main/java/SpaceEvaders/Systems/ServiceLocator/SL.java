@@ -21,7 +21,14 @@ public class SL {
         eventHandler.init();
         inputHandler.init();
         audioManager.init();
+    }
+
+    public static void changeWindow(String title) {
+        window.dispose();
+        eventHandler.init();
+        inputHandler.init();
         eventHandler.addListener(audioManager);
+        window = new Window(title);
     }
 }
 

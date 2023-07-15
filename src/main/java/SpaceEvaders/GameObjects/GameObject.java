@@ -2,9 +2,12 @@ package SpaceEvaders.GameObjects;
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.Graphics;
+import java.awt.Color;
 
 import SpaceEvaders.Utilities.Vector2;
 import SpaceEvaders.Utilities.BooleanToggler;
+
 
 
 public abstract class GameObject {
@@ -29,6 +32,7 @@ public abstract class GameObject {
     }
     
     public Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/enemy1.png"));
+    public Image flashImage = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/enemy1-red.png"));
   
     public void move(Vector2 distance)
     {
@@ -75,10 +79,22 @@ public abstract class GameObject {
         isActive = active;
     }
 
+    public void drawFlashImage(Graphics g) {
+        int sizeX = (int) (radius.x * 2);
+        int sizeY = (int) (radius.y * 2);
+         
+        g.drawImage(flashImage, (int) position.x - (int) radius.x, (int) position.y - (int) radius.y,
+                sizeX, sizeY, null);
+    }
 
-
-
-
-
-
+    //default draw method
+    public void draw(Graphics g) {
+        int sizeX = (int) (radius.x * 2);
+        int sizeY = (int) (radius.y * 2);
+        g.drawImage(image, (int) position.x - (int) radius.x, (int) position.y - (int) radius.y,
+                sizeX, sizeY, null);
+        if (!isFlashing())
+            return;
+        drawFlashImage(g);
+    }
 }

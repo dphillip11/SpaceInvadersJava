@@ -29,6 +29,10 @@ public class Variables {
 
     public static Vector2 enemySizeVariant0 = new Vector2(15, 15);
     public static Vector2 enemySizeVariant1 = new Vector2(30, 30);
+
+    public static float powerup_size = 5;
+    public static float healthPowerupChance = 1.0f;
+    public static float healthPowerupSpeed = 50;
     
     public static float SFX_volume = 0.5f;
     public static int spawnPosY = -100;
