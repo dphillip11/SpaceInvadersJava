@@ -12,18 +12,8 @@ public class Application {
 	}
 
 	public static void startGame() {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				game = new GameLoop();
-
-				Thread t = new Thread() {
-					public void run() {
-						game.start();
-					}
-				};
-				t.start();
-			}
-		});
+		game = new GameLoop();
+		game.start();
 	}
 
 	public static void exit()

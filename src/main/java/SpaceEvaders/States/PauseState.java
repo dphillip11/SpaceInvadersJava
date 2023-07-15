@@ -38,7 +38,7 @@ public class PauseState implements IState, InputListener {
     @Override
     public void onKeyPressed(Input input) {
         if (input == Input.PAUSE) {
-            SL.stateMachine.changeState(playState);
+            SL.stateMachine.changeState(playState, true);
             SL.eventHandler.notify(EventType.RESUME);
         }
     }
