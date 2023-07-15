@@ -13,7 +13,13 @@ public class Spaceship extends CollidableObject {
         SL.eventHandler.notify(EventType.ENEMY_DESTROYED);
         if(Math.random() < Variables.healthPowerupChance)
         {
-            SL.eventHandler.notify(EventType.SPAWN_HEALTH_POWERUP, position, (int)(Math.ceil(Math.random() * maxHealth)));
+            SL.eventHandler.notify(EventType.SPAWN_HEALTH_POWERUP, position,
+                    (int) (Math.ceil(Math.random() * maxHealth)));
+        }
+        else if (Math.random() < Variables.bulletPowerupChance)
+        {
+            SL.eventHandler.notify(EventType.SPAWN_BULLET_POWERUP, position,
+                    (int) (Math.ceil(Math.random() * maxHealth)));
         }
     }
 

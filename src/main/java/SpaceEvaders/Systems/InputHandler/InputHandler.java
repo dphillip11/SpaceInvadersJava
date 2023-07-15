@@ -97,5 +97,10 @@ public class InputHandler implements KeyListener {
             dispatch(Input.RIGHT);
         }
     }
+    public void fireHeldSpace() {
+        if (keys[KeyEvent.VK_SPACE]) {
+            dispatch(Input.SPACE);
+        }
+    }
 }
 

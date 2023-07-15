@@ -1,13 +1,20 @@
 package SpaceEvaders.States;
 
 import java.util.List;
+
+import org.yaml.snakeyaml.tokens.ValueToken;
+
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 
 
 import SpaceEvaders.GameObjects.GameObject;
 import SpaceEvaders.GameObjects.HealthPowerup;
+import SpaceEvaders.GameObjects.BulletPowerup;
 import SpaceEvaders.GameObjects.CollidableObject;
 import SpaceEvaders.Systems.StateMachine.IState;
 import SpaceEvaders.Systems.InputHandler.Input;
@@ -37,6 +44,7 @@ public class PlayState implements IState, InputListener, EventListener {
     private float spawnTimer = 0;
     public int score = 0;
     public float difficulty = 1;
+    public Boolean bulletPoweredUp = false;
 
     private PlayPanel playPanel = new PlayPanel(this);
     public PlayerShip player = new PlayerShip();
@@ -81,6 +89,9 @@ public class PlayState implements IState, InputListener, EventListener {
         playPanel.repaint();
         // Repeat input for pressed keys
         SL.inputHandler.fireHeldArrowKeys();
+        if (bulletPoweredUp) {
+            SL.inputHandler.fireHeldSpace();
+        }
 
     }
 
@@ -89,7 +100,7 @@ public class PlayState implements IState, InputListener, EventListener {
         System.out.println("PlayState: exit, time: " + time);
     }
 
-     public void onKeyPressed(Input input) {
+    public void onKeyPressed(Input input) {
         if (input == Input.PAUSE) {
             SL.stateMachine.changeState(new PauseState(), this);
             SL.eventHandler.notify(EventType.PAUSED);
@@ -97,6 +108,10 @@ public class PlayState implements IState, InputListener, EventListener {
         if (input == Input.ESCAPE) {
             SL.stateMachine.changeState(new SplashState(), this);
         }
+    }
+    
+     private void broadcastBulletPowerupExpired() {
+         SL.eventHandler.notify(EventType.BULLET_POWERUP_EXPIRED);
     }
 
     public void onEvent(EventType event, Object... data) {
@@ -111,12 +126,32 @@ public class PlayState implements IState, InputListener, EventListener {
         }
         if (event == EventType.SPAWN_HEALTH_POWERUP) {
             assert (data.length == 2);
-            System.out.println(((Vector2) data[0]).x);
-            System.out.println(((Vector2) data[0]).y);
-            System.out.println((int)data[1]);
-            gameObjects.add(new HealthPowerup((Vector2) data[0], (int)data[1]));
+            gameObjects.add(new HealthPowerup((Vector2) data[0], (int) data[1]));
         }
+        if (event == EventType.SPAWN_BULLET_POWERUP) {
+            assert (data.length == 2);
+            gameObjects.add(new BulletPowerup((Vector2) data[0], (int) data[1]));
+        }
+        if (event == EventType.BULLET_POWERUP_COLLECTED) {
+            assert (data.length == 1);
+            bulletPoweredUp = true;
+
+            Timer timer = new Timer();
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    broadcastBulletPowerupExpired();
+                }
+            };
+            long bulletPowerupDurationMillis = (long) (Variables.bulletPowerupDuration * 1000); // Convert to milliseconds
+            timer.schedule(task, bulletPowerupDurationMillis);
+        }
+        if(event == EventType.BULLET_POWERUP_EXPIRED) {
+            bulletPoweredUp = false;
+        }
+
     }
+    
 
     @Override
     public State getState() {
