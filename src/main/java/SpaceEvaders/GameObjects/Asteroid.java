@@ -15,7 +15,7 @@ public class Asteroid extends CollidableObject {
     public Image asteroidSmall = Toolkit.getDefaultToolkit()
             .getImage(getClass().getResource("/images/small/a10000.png"));
 
-    private int size = 2;
+    public int size = 2;
     
     public static void setGameObjects(List<GameObject> gameobjects) {
         Asteroid.gameobjects = gameobjects;
@@ -28,10 +28,10 @@ public class Asteroid extends CollidableObject {
             asteroid1.setPosition(new Vector2(position.x, position.y));
             Asteroid asteroid2 = newAsteroid(size - 1);
             asteroid2.setPosition(new Vector2(position.x - radius.x / 2, position.y - radius.y / 2));
-            asteroid2.setVelocity(velocity.subtract(new Vector2((float)Math.random() * 10, 0)));
+            asteroid2.setVelocity(velocity.subtract(new Vector2((float)Math.random() * 50, 0)));
             Asteroid asteroid3 = newAsteroid(size - 1);
-            asteroid3.setPosition(new Vector2(position.x + radius.x / 2, position.y - radius.x / 2));
-            asteroid3.setVelocity(velocity.add(new Vector2((float)Math.random() * 10, 0)));
+            asteroid3.setPosition(new Vector2(position.x + radius.x / 2, position.y + radius.y / 2));
+            asteroid3.setVelocity(velocity.add(new Vector2((float)Math.random() * 50, 0)));
         }
         isActive = false;
     }
@@ -68,6 +68,11 @@ public class Asteroid extends CollidableObject {
         if (otherType == ObjectType.BULLET_ENEMY || otherType == ObjectType.BULLET_FRIENDLY) {
             takeDamage(1);
             setHasCollided(true);
+        }
+        if(otherType == ObjectType.ENEMY || otherType == ObjectType.PLAYER)
+        {
+            setHasCollided(true);
+            die();
         }
     }
 

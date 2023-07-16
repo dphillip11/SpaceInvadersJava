@@ -107,5 +107,11 @@ public class Spaceship extends CollidableObject {
         if (otherType == ObjectType.BULLET_POWERUP) {
             resetPowerupTimer(((Powerup) otherObject).powerup_strength);
         }
+        if(otherType == ObjectType.ASTEROID)
+        {
+            takeDamage((((Asteroid)otherObject).size + 1) * 3);
+            startFlashing();
+            setHasCollided(true);
+        }
     }
 }
