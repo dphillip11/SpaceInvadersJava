@@ -20,6 +20,8 @@ public class PlayerShip extends Spaceship implements InputListener {
         SL.inputHandler.addListener(this);
         setHealth(Variables.maxPlayerHealth);
         setMaxHealth(Variables.maxPlayerHealth);
+        bulletSize = Variables.playerBulletRadius;
+        bulletSpeed = Variables.playerBulletSpeed;
     }
 
     @Override
@@ -40,15 +42,6 @@ public class PlayerShip extends Spaceship implements InputListener {
         setVelocity(new Vector2(0, 0));
     }
     
-    @Override
-    public void onCollide(ObjectType otherType) {
-        if (otherType == ObjectType.BULLET_ENEMY) {
-            takeDamage(1);
-            startFlashing();
-            setHasCollided(true);
-            SL.eventHandler.notify(EventType.PLAYER_HIT);
-        }
-    }
 
     @Override
     public void onKeyPressed(Input input) {
@@ -66,7 +59,7 @@ public class PlayerShip extends Spaceship implements InputListener {
             velocity = new Vector2(Variables.playerSpeed, velocity.y);
         }
         if (input == Input.SPACE) {
-            shoot(Variables.playerBulletSpeed, Variables.playerBulletRadius, true);
+            shoot();
         }
     }
 }

@@ -3,10 +3,14 @@ package SpaceEvaders.GameObjects;
 public abstract class CollidableObject extends GameObject {
     protected int health = 1;
     protected int maxHealth = 1;
-    protected ObjectType type = ObjectType.UNDEFINED;
+    protected ObjectType type = ObjectType.ENEMY;
     protected Boolean hasCollided = false;
 
     public abstract void die();
+
+    public Boolean isFriendly() {
+        return (type != ObjectType.ENEMY && type != ObjectType.BULLET_ENEMY);
+    }
 
     public void resetCollisions() {
         hasCollided = false;
@@ -26,6 +30,7 @@ public abstract class CollidableObject extends GameObject {
 
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
+        health = maxHealth;
     }
 
     public int getMaxHealth() {
@@ -47,7 +52,7 @@ public abstract class CollidableObject extends GameObject {
         this.type = type;
     }
 
-    public abstract void onCollide(ObjectType otherType);
+    public abstract void onCollide(ObjectType otherType, CollidableObject otherObject);
 
     public void takeDamage(int damage) {
         assert damage >= 0;

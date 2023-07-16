@@ -12,7 +12,7 @@ public class Physics {
         for (GameObject gameObject : gameObjects) {
             gameObject.setPosition(gameObject.getPosition().add(gameObject.getVelocity().multiply((float) deltaTime)));
             checkBoundaries((CollidableObject) gameObject);
-            gameObject.updateToggler(deltaTime );
+            gameObject.updateToggler(deltaTime);
         }
     }
 

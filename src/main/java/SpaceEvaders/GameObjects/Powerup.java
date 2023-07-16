@@ -9,7 +9,7 @@ import SpaceEvaders.Systems.ServiceLocator.SL;
 
 
 public abstract class Powerup extends CollidableObject {
-    protected int powerup_strength = 1;
+    public int powerup_strength = 1;
     protected EventType collideEvent = EventType.PLAYER_REPLENISH_HEALTH;
 
     public Powerup(Vector2 _position, int _powerup_strength) {
@@ -30,7 +30,7 @@ public abstract class Powerup extends CollidableObject {
     }
 
      @Override
-    public void onCollide(ObjectType otherType) {
+    public void onCollide(ObjectType otherType, CollidableObject otherObject) {
         if (otherType == ObjectType.PLAYER) {
             SL.eventHandler.notify(collideEvent, powerup_strength);
             die();

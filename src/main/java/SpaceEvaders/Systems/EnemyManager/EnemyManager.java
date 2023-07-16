@@ -5,15 +5,28 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 
+import SpaceEvaders.Builder.SpaceshipBuilder;
 import SpaceEvaders.CommonState.Constants;
+import SpaceEvaders.CommonState.EnemyShipPresets;
 import SpaceEvaders.CommonState.Variables;
-import SpaceEvaders.GameObjects.EnemyShip;
 import SpaceEvaders.GameObjects.Spaceship;
 import SpaceEvaders.GameObjects.GameObject;
 import SpaceEvaders.Utilities.Vector2;
 
 
 public class EnemyManager {
+
+    SpaceshipBuilder spaceshipBuilder; 
+
+    EnemyManager() {
+        spaceshipBuilder = new SpaceshipBuilder();
+        spaceshipBuilder.addPreset(EnemyShipPresets.variant0(), Variables.incidenceVariant0);
+        spaceshipBuilder.addPreset(EnemyShipPresets.variant1(), Variables.incidenceVariant1);
+        spaceshipBuilder.addPreset(EnemyShipPresets.variant2(), Variables.incidenceVariant2);
+        spaceshipBuilder.addPreset(EnemyShipPresets.variant3(), Variables.incidenceVariant3);
+        spaceshipBuilder.addPreset(EnemyShipPresets.variant4(), Variables.incidenceVariant4);
+        spaceshipBuilder.addPreset(EnemyShipPresets.variant5(), Variables.incidenceVariant5);
+    }
 
     static public void SpawnRow(List<GameObject> gameObjects, int screen_width) {
         //set random x speed
@@ -25,7 +38,7 @@ public class EnemyManager {
         int start = (int) (Math.random() * spacing);
         //create enemies
         for (int i = 0; i < num_enemies; i++) {
-            gameObjects.add(new EnemyShip());
+            gameObjects.add(spaceshipBuilder.newShip(new Vector2(0, 0)));
             //set enemy velocity
             gameObjects.get(gameObjects.size() - 1)
                     .setPosition(new Vector2(start + i * spacing, Variables.spawnPosY));
@@ -87,6 +100,7 @@ public class EnemyManager {
 
         for (int i = 0; i < numShips; i++) {
             Spaceship spaceShip = shipList.get(i);
+            spaceShip.updatePowerupStatus(1/Constants.targetFPS);
             if (spaceShip instanceof EnemyShip) {
                 EnemyShip enemyShip = (EnemyShip) spaceShip;              
                 // Calculate the target x position for the ship in the current row
@@ -98,14 +112,14 @@ public class EnemyManager {
                     float lowerX = i > 0 ? shipList.get(i - 1).getMaxPos().x : 0;
                     float upperX = i < numShips - 1 ? shipList.get(i + 1).getMinPos().x : Constants.screenWidth;
                     targetX = (lowerX + upperX) / 2;
-                    if (Math.abs(targetX - player_position.x) < 50 && Math.random() < Variables.shootRateVariant1) {
-                        enemyShip.shoot(Variables.enemyBulletSpeedVariant1, Variables.enemyBulletRadiusVariant1, false);
+                    if (enemyShip.hasPowerup || Math.abs(targetX - player_position.x) < 50 && Math.random() < Variables.shootRateVariant1) {
+                        enemyShip.shoot();
                     }
                 }
                 else
                 {
-                    if (Math.abs(enemyShip.getPosition().x - player_position.x) < 50 && enemyShip.getPosition().y < player_position.y && Math.random() < Variables.shootRateVariant0) {
-                        enemyShip.shoot(Variables.enemyBulletSpeedVariant0, Variables.enemyBulletRadiusVariant1, false);
+                    if (enemyShip.hasPowerup || Math.abs(enemyShip.getPosition().x - player_position.x) < 50 && enemyShip.getPosition().y < player_position.y && Math.random() < Variables.shootRateVariant0) {
+                        enemyShip.shoot();
                     }
                 }
             

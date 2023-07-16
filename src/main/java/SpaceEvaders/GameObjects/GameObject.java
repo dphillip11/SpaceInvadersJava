@@ -3,7 +3,6 @@ package SpaceEvaders.GameObjects;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.Graphics;
-import java.awt.Color;
 
 import SpaceEvaders.Utilities.Vector2;
 import SpaceEvaders.Utilities.BooleanToggler;
