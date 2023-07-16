@@ -65,7 +65,7 @@ public class Bullet extends CollidableObject {
             takeDamage(1);
             setHasCollided(true);
         }
-        else 
+        else if (otherType == ObjectType.ASTEROID)
         {
             takeDamage(1);
             setHasCollided(true);

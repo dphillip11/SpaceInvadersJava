@@ -35,3 +35,9 @@ build/
 mvnw
 
 .mvn/
+
+src/main/resources/images/small/
+
+src/main/resources/images/large/
+
+src/main/resources/images/medium/

@@ -25,11 +25,13 @@ public class Asteroid extends CollidableObject {
         if (size > 0)
         {
             Asteroid asteroid1 = newAsteroid(size - 1);
-            asteroid1.setPosition(new Vector2(position.x + 20, position.y));
+            asteroid1.setPosition(new Vector2(position.x, position.y));
             Asteroid asteroid2 = newAsteroid(size - 1);
-            asteroid2.setPosition(new Vector2(position.x - 20, position.y - 20));
+            asteroid2.setPosition(new Vector2(position.x - radius.x / 2, position.y - radius.y / 2));
+            asteroid2.setVelocity(velocity.subtract(new Vector2((float)Math.random() * 10, 0)));
             Asteroid asteroid3 = newAsteroid(size - 1);
-            asteroid3.setPosition(new Vector2(position.x + 20, position.y - 20));
+            asteroid3.setPosition(new Vector2(position.x + radius.x / 2, position.y - radius.x / 2));
+            asteroid3.setVelocity(velocity.add(new Vector2((float)Math.random() * 10, 0)));
         }
         isActive = false;
     }
@@ -58,7 +60,8 @@ public class Asteroid extends CollidableObject {
         setMaxHealth(4);
         size = _size;
         setImage();
-        setVelocity(new Vector2(0, (float)(Math.random() * 70 + 30)));
+        setVelocity(new Vector2((float)Math.random() * 30 - 15, (float) (Math.random() * 70 + 30)));
+        type = ObjectType.ASTEROID;
     }
     
     public void onCollide(ObjectType otherType, CollidableObject otherObject) {

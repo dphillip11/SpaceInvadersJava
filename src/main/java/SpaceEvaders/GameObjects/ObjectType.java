@@ -8,5 +8,6 @@ public enum ObjectType {
     HEALTH_POWERUP,
     BULLET_POWERUP,
     TEST,
+    ASTEROID,
     UNDEFINED
 }

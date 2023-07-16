@@ -10,6 +10,8 @@ import SpaceEvaders.CommonState.Constants;
 import SpaceEvaders.CommonState.EnemyShipPresets;
 import SpaceEvaders.CommonState.Variables;
 import SpaceEvaders.GameObjects.Spaceship;
+import SpaceEvaders.GameObjects.Asteroid;
+import SpaceEvaders.GameObjects.CollidableObject;
 import SpaceEvaders.GameObjects.GameObject;
 import SpaceEvaders.GameObjects.ObjectType;
 import SpaceEvaders.Utilities.Vector2;
@@ -43,25 +45,25 @@ public class EnemyManager {
     
    static public void UpdateEnemyVelocities(List<GameObject> gameObjects, Vector2 player_position) {
     // Create a map to store the lists of ships in each row
-    Map<Integer, List<Spaceship>> rowShipMap = new HashMap<>();
+    Map<Integer, List<CollidableObject>> rowShipMap = new HashMap<>();
 
     // Iterate through all the game objects
     for (GameObject gameObject : gameObjects) {
         // Check if the object is an spaceShip
-        if (gameObject instanceof Spaceship) {
-            Spaceship enemyShip = (Spaceship) gameObject;
-            int rowY = (int)enemyShip.getPosition().y / Variables.evasionRange;
+        if (gameObject instanceof Spaceship || gameObject instanceof Asteroid) {
+            CollidableObject object = (CollidableObject) gameObject;
+            int rowY = (int)object.getPosition().y / Variables.evasionRange;
             // Get or create the list of ships for the current row
-            List<Spaceship> shipList = rowShipMap.getOrDefault(rowY, new ArrayList<>());
+            List<CollidableObject> shipList = rowShipMap.getOrDefault(rowY, new ArrayList<>());
 
             // Add the ship to the list for the current row
-            shipList.add(enemyShip);
+            shipList.add(object);
             rowShipMap.put(rowY, shipList);
         }
     }
 
     // Iterate through the ships in each row
-    for (List<Spaceship> shipList : rowShipMap.values()) {
+    for (List<CollidableObject> shipList : rowShipMap.values()) {
         // Sort the ships by their x positions
         shipList.sort((ship1, ship2) -> Float.compare(ship1.getPosition().x, ship2.getPosition().x));
 
@@ -69,7 +71,7 @@ public class EnemyManager {
         int numShips = shipList.size();
         //calculate total width of ships in row
         int totalWidth = 0;
-        for (Spaceship enemyShip : shipList) {
+        for (CollidableObject enemyShip : shipList) {
             totalWidth += enemyShip.getRadius().x * 2;
         }
         int totalSpacing = (int) Constants.screenWidth - totalWidth;
@@ -77,7 +79,11 @@ public class EnemyManager {
         totalWidth = 0;
 
         for (int i = 0; i < numShips; i++) {
-            Spaceship spaceShip = shipList.get(i);
+            CollidableObject object = shipList.get(i);
+            if (object.getType() == ObjectType.ASTEROID) {
+                continue;
+            }
+            Spaceship spaceShip = (Spaceship) object;
             if (spaceShip.hasPowerup) {
                     spaceShip.shoot();
             }
