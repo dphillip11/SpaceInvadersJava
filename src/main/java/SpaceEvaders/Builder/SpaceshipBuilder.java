@@ -8,19 +8,19 @@ import SpaceEvaders.Utilities.Vector2;
 
 public class SpaceshipBuilder {
     //keep a list of presets
-    List<SpaceshipPreset> presets = new ArrayList<SpaceshipPreset>();
+    static List<SpaceshipPreset> presets = new ArrayList<SpaceshipPreset>();
     //keep a list of incidence rates
-    List<Float> incidenceRates = new ArrayList<Float>();
+    static List<Float> incidenceRates = new ArrayList<Float>();
     //total incidence
-    float totalIncidence = 0;
+    static float totalIncidence = 0;
 
-    public void addPreset(SpaceshipPreset preset, float incidence) {
+    static public void addPreset(SpaceshipPreset preset, float incidence) {
         presets.add(preset);
         incidenceRates.add(incidence);
         totalIncidence += incidence;
     }
 
-    private int choosePreset() {
+    static private int choosePreset() {
         float random = (float) Math.random() * totalIncidence;
         float sum = 0;
         for (int i = 0; i < incidenceRates.size(); i++) {
@@ -34,12 +34,22 @@ public class SpaceshipBuilder {
         return presets.size() - 1;
     }
 
-    public void changeIncidence(int index, float new_incidence) {
+    static public void changeIncidence(int index, float new_incidence) {
         totalIncidence += new_incidence - incidenceRates.get(index);
         incidenceRates.set(index, new_incidence);
     }
 
-    public Spaceship newShip(Vector2 position) {
+    static public void clear()
+    {
+        presets.clear();
+        incidenceRates.clear();
+        totalIncidence = 0;
+    }
+    
+    static public Spaceship newShip(Vector2 position) {
+        if (presets.size() == 0) {
+            return null;
+        }
         SpaceshipPreset preset = presets.get(choosePreset());
         Spaceship ship = new Spaceship();
         ship.applyPreset(preset);

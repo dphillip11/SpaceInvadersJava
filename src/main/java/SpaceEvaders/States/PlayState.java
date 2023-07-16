@@ -9,6 +9,7 @@ import java.util.Iterator;
 
 import SpaceEvaders.GameObjects.GameObject;
 import SpaceEvaders.GameObjects.HealthPowerup;
+import SpaceEvaders.GameObjects.Asteroid;
 import SpaceEvaders.GameObjects.BulletPowerup;
 import SpaceEvaders.GameObjects.CollidableObject;
 import SpaceEvaders.Systems.StateMachine.IState;
@@ -39,8 +40,6 @@ public class PlayState implements IState, InputListener, EventListener {
     private float spawnTimer = 0;
     public int score = 0;
     public float difficulty = 1;
-    public Boolean bulletPoweredUp = false;
-    public float bulletPowerupTimer = 0;
 
 
     private PlayPanel playPanel = new PlayPanel(this);
@@ -53,6 +52,8 @@ public class PlayState implements IState, InputListener, EventListener {
         SL.inputHandler.addListener(this);
         SL.inputHandler.addListener(player);
         SL.eventHandler.addListener(this);
+        EnemyManager.init();
+        Asteroid.setGameObjects(gameObjects);
 
         if (args.length == 0) {
             player.setPosition(Constants.screenWidth / 2, Constants.screenHeight - 100);
@@ -80,20 +81,14 @@ public class PlayState implements IState, InputListener, EventListener {
         if (spawnTimer <= 0) {
             spawnTimer = Variables.enemySpawnInterval;
             EnemyManager.SpawnRow(gameObjects, Constants.screenWidth);
+            Asteroid.newAsteroid(2);
         }
 
         // Render to the buffer
         playPanel.repaint();
         // Repeat input for pressed keys
         SL.inputHandler.fireHeldArrowKeys();
-        if (bulletPoweredUp) {
-            bulletPowerupTimer -= deltaTime;
-            if (bulletPowerupTimer <= 0) {
-                bulletPoweredUp = false;
-            }
-            SL.inputHandler.fireHeldSpace();
-        }
-
+        Variables.cellSize = Math.max(300 - (int)(3 * time), 50);
     }
 
     @Override
@@ -128,11 +123,6 @@ public class PlayState implements IState, InputListener, EventListener {
         if (event == EventType.SPAWN_BULLET_POWERUP) {
             assert (data.length == 2);
             gameObjects.add(new BulletPowerup((Vector2) data[0], (int) data[1]));
-        }
-         if (event == EventType.BULLET_POWERUP_COLLECTED) {
-            assert (data.length == 1);
-            bulletPoweredUp = true;
-            bulletPowerupTimer = (float) ((int)data[0]);
         }
     }
     

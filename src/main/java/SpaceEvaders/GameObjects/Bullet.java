@@ -60,6 +60,16 @@ public class Bullet extends CollidableObject {
             takeDamage(1);
             setHasCollided(true);
         }
+        else if(otherType == ObjectType.BULLET_POWERUP || otherType == ObjectType.HEALTH_POWERUP)
+        {
+            takeDamage(1);
+            setHasCollided(true);
+        }
+        else 
+        {
+            takeDamage(1);
+            setHasCollided(true);
+        }
 
     }
 

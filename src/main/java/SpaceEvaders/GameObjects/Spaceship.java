@@ -17,9 +17,9 @@ public class Spaceship extends CollidableObject {
     protected Vector2 bulletSize = new Vector2(1, 1);
 
     public void applyPreset(SpaceshipPreset preset) {
-        bulletSpeed = preset.bulletSpeed;
-        bulletSize = preset.bulletSize;
-        maxHealth = preset.maxHealth;
+        setBulletSpeed(preset.bulletSpeed);
+        setBulletSize(preset.bulletSize);
+        setMaxHealth(preset.maxHealth);
         type = preset.type;
         velocity = preset.velocity;
         radius = preset.radius;
@@ -38,8 +38,12 @@ public class Spaceship extends CollidableObject {
     public void updatePowerupStatus(float dt) {
         if (hasPowerup) {
             powerupTimer -= dt;
+            if (type == ObjectType.PLAYER)
+                    System.out.println("Powerup countdown: " + powerupTimer);
             if (powerupTimer <= 0) {
                 hasPowerup = false;
+                if (type == ObjectType.PLAYER)
+                    System.out.println("Powerup ended");
             }
         }
     }

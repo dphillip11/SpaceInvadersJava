@@ -2,6 +2,7 @@ package SpaceEvaders.Systems.PhysicsManager;
 
 import SpaceEvaders.CommonState.Constants;
 import SpaceEvaders.GameObjects.CollidableObject;
+import SpaceEvaders.GameObjects.Spaceship;
 import SpaceEvaders.GameObjects.GameObject;
 import java.util.List;
 import SpaceEvaders.Utilities.Vector2;
@@ -13,6 +14,8 @@ public class Physics {
             gameObject.setPosition(gameObject.getPosition().add(gameObject.getVelocity().multiply((float) deltaTime)));
             checkBoundaries((CollidableObject) gameObject);
             gameObject.updateToggler(deltaTime);
+            if(gameObject instanceof Spaceship)
+                ((Spaceship)gameObject).updatePowerupStatus((float)deltaTime);
         }
     }
 
